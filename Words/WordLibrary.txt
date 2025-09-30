@@ -1,0 +1,14 @@
+﻿Duck
+Desk
+Chair
+Bottle
+Screen
+Monitor
+Computer
+Terminal
+Laptop
+Phone
+Editor
+Software
+Developer
+Program
