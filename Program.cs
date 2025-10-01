@@ -7,9 +7,15 @@ namespace WordleConsoleApp
         static void Main(string[] args)
         {
             var game = new Game();
-            game.SetDirectory();
-
             var word = new Word();
+
+            
+
+            while (game.StartMenu())
+            {
+                word.PickWord();
+                Console.ReadLine();
+            }
         }
     }
 }

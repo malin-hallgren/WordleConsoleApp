@@ -14,18 +14,23 @@ namespace WordleConsoleApp.Words
         private List <string> PossibleWords { get; set; } 
         public string SelectedWord { get; private set; }
 
+        
+
         public Word()
         {
-            CurrentDirectory = Directory.GetCurrentDirectory();
-            PrecursorPossibleWords = File.ReadAllLines(CurrentDirectory + @"\Words\WordLibrary.txt");
+            PrecursorPossibleWords = File.ReadAllLines(ReadFileDirectory());
             PossibleWords = PrecursorPossibleWords.ToList();
             SelectedWord = PickWord();
         }
 
+        //Grabs the correct path for the file and makes it relative 
+        private string ReadFileDirectory()
+        {
+            string baseDirectory = AppContext.BaseDirectory;
+            return Path.Combine(baseDirectory, @"..\..\..\\Words\WordLibrary.txt");
+        }
         public string PickWord()
         {
-           
-            
             foreach (var word in PossibleWords)
             {
                 Console.WriteLine(word);
