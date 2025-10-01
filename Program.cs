@@ -11,9 +11,18 @@ namespace WordleConsoleApp
 
             
 
-            while (game.StartMenu())
+            while (game.StartMenu(word))
             {
-                word.PickWord();
+                word.ScrambleWord(word.SelectedWord);
+                game.DisplayWord(word);
+
+                while(game.Attempt < 5 && !game.isCorrect)
+                {
+                    game.MakeGuess(word);
+                }
+
+                game.TabToPos(0, 4, game.Attempt + 1);
+                Console.WriteLine("\nyou failed");
                 Console.ReadLine();
             }
         }

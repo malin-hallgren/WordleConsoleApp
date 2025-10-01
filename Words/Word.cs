@@ -9,18 +9,16 @@ namespace WordleConsoleApp.Words
 {
     internal class Word
     {
-        private string CurrentDirectory;
         private string[] PrecursorPossibleWords;
         private List <string> PossibleWords { get; set; } 
         public string SelectedWord { get; private set; }
-
+        public string ScrambledWord { get; private set; }
         
 
         public Word()
         {
             PrecursorPossibleWords = File.ReadAllLines(ReadFileDirectory());
             PossibleWords = PrecursorPossibleWords.ToList();
-            SelectedWord = PickWord();
         }
 
         //Grabs the correct path for the file and makes it relative 
@@ -29,18 +27,47 @@ namespace WordleConsoleApp.Words
             string baseDirectory = AppContext.BaseDirectory;
             return Path.Combine(baseDirectory, @"..\..\..\\Words\WordLibrary.txt");
         }
-        public string PickWord()
+        public void PickWord()
         {
-            foreach (var word in PossibleWords)
-            {
-                Console.WriteLine(word);
-            }
+            //foreach (var word in PossibleWords)
+            //{
+            //    Console.WriteLine(word);
+            //}
 
             var random = new Random();
             int randomIndex = random.Next(PossibleWords.Count);
 
-            Console.WriteLine($"Word picked was: {PossibleWords[randomIndex]}");
-            return PossibleWords[randomIndex];
+            SelectedWord = PossibleWords[randomIndex].ToLower();
+        }
+
+        public void ScrambleWord(string word)
+        {
+            Random random = new Random();
+
+            int[] scrambler = new int[word.Length];
+            Array.Fill(scrambler, -1);
+
+            for (int i = 0; i < word.Length; i++)
+            {
+                bool isUnique = false;
+                int numToAdd = 0;
+
+                while (!isUnique)
+                {
+                    numToAdd = random.Next(0, word.Length);
+                    isUnique = !scrambler.Contains(numToAdd);
+                }
+                scrambler[i] = numToAdd;
+            }
+
+            char[] scrambleArray = new char[word.Length];
+
+            for (int i = 0; i < word.Length; i++)
+            {
+                scrambleArray[i] = word[scrambler[i]];
+            }
+            
+            ScrambledWord = new string(scrambleArray);
         }
     }
 }
