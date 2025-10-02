@@ -5,119 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using WordleConsoleApp.Words;
 
-namespace WordleConsoleApp
+namespace WordleConsoleApp.Utilities
 {
-    internal class Game
+    internal class MenuUI
     {
+
         public string[] StartMenuOptions { get; set; } = { "Start Game", "High Scores", "Settings", "Quit" };
-        public bool GameRunning { get; set; }
 
-        public int Attempt {  get; private set; }
-
-        public string CurrentGuess { get; private set; }
-
-        public bool isCorrect { get; private set; } = false;
-
-        private int Tab { get; set; } = 8;
-
-        private int StaticRows { get; set; } = 4;
-
-        public void DisplayWord(Word word)
-        {
-            Console.WriteLine($"Guess the word!\n\n\t{word.ScrambledWord}\n");
-        }
-
-        public void MakeGuess(Word word)
-        {
-            TabToPos(Tab, StaticRows, Attempt);
-            CurrentGuess = GuessInput(word.ScrambledWord.Length, word.ScrambledWord.Length + 1);
-            isCorrect = CheckGuess(CurrentGuess, word.SelectedWord);
-            Attempt += 1;
-        }
-
-        public void TabToPos(int tab, int staticRows, int variableRows)
-        {
-            int row = staticRows + variableRows;
-            Console.SetCursorPosition(tab, row);
-        }
-
-        public void ClearRow(int tab, int staticRows, int variableRows)
-        {
-            TabToPos(tab, staticRows, variableRows);
-            Console.Write(new string(' ', Console.BufferWidth));
-        }
-
-        public void ClearRows(int tab, int staticRows, int variableRows, int numOfRows)
-        {
-            for (int i = 0; i < numOfRows; i++)
-            {
-                ClearRow(tab, staticRows, variableRows + i);
-            }
-            TabToPos(tab, staticRows, variableRows);
-        }
-
-        private bool CheckGuess(string guess, string target)
-        {
-            for (int i = 0; i < target.Length; i++)
-            {
-                if (guess[i] == target[i])
-                {
-                    //Saves original colours
-                    ConsoleColor originalBackground = Console.BackgroundColor;
-                    ConsoleColor originalForeground = Console.ForegroundColor;
-
-                    //Inverts colours for highlight
-                    Console.BackgroundColor = ConsoleColor.Gray;
-                    Console.ForegroundColor = ConsoleColor.Black;
-
-                    TabToPos(Tab + i, StaticRows, Attempt);
-                    Console.Write(guess[i]);
-
-                    //resets colour to prevent permanent higlighting of this option
-                    Console.BackgroundColor = originalBackground;
-                    Console.ForegroundColor = originalForeground;
-                }
-                else
-                {
-                    TabToPos(Tab + i, StaticRows, Attempt);
-                    Console.Write(guess[i]);
-                }
-            }
-
-            if (guess == target)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public string GuessInput(int minRange, int maxRange)
-        {
-            string output = "";
-
-            while (true)
-            {
-                output = Console.ReadLine();
-
-                if (output.Length >= minRange && output.Length < maxRange)
-                {
-                    return output;
-                }
-                else
-                {
-                    TabToPos(Tab, StaticRows, Attempt);
-                    Console.WriteLine("Faulty guess, make a guess no longer than the scrambled word.");
-                    TabToPos(Tab, StaticRows, Attempt+1);
-                    Console.WriteLine("Press Enter to guess again");
-                    Console.ReadLine();
-                    ClearRows(Tab, StaticRows, Attempt, 2);
-                }
-            }
-        }
-        public bool StartMenu(Word word)
+        public bool StartMenu(Word word, Game game)
         {
             while (true)
             {
@@ -128,6 +23,7 @@ namespace WordleConsoleApp
                     case 0:
                         Console.Clear();
                         word.PickWord();
+                        game.SetGame(game);
                         return true;
                     case 1:
                         Console.Clear();
@@ -143,7 +39,6 @@ namespace WordleConsoleApp
                         return false;
                 }
             }
-            
         }
 
         //Selector for the start menu
@@ -225,8 +120,5 @@ namespace WordleConsoleApp
             Console.Write(new string(' ', Console.BufferWidth));
             Console.SetCursorPosition(0, 0);
         }
-
-        
-            
     }
 }

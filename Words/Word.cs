@@ -29,11 +29,6 @@ namespace WordleConsoleApp.Words
         }
         public void PickWord()
         {
-            //foreach (var word in PossibleWords)
-            //{
-            //    Console.WriteLine(word);
-            //}
-
             var random = new Random();
             int randomIndex = random.Next(PossibleWords.Count);
 
