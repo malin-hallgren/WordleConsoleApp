@@ -11,12 +11,14 @@ namespace WordleConsoleApp
             var game = new Game();
             var word = new Word();
             var menu = new MenuUI();
+            var dynamicMenu = new DynamicMenu();
+            game.ActiveUsers.Add(new Manager());
             
             //create new player object, ask if user want to play as this player or 
             //create new. Save old player. List<BasicUser>? ActiveUsers, go by isCurrent bool
             while (menu.StartMenu(word, game))
             {
-                
+                game.setPlayer(dynamicMenu);
                 word.ScrambleWord(word.SelectedWord);
                 game.DisplayWord(word);
 
