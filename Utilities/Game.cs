@@ -10,7 +10,9 @@ namespace WordleConsoleApp.Utilities
 {
     internal class Game
     {
-        public List<BasicUser> ActiveUsers { get; set; }
+        public List<BasicUser> ActiveUsers { get; set; } = new List<BasicUser>();
+
+        public BasicUser currentUser { get; set; }
         public bool GameRunning { get; set; }
 
         public int Attempt {  get; private set; }
@@ -32,9 +34,13 @@ namespace WordleConsoleApp.Utilities
             isCorrect = false;
         }
 
-        public void setPlayer()
-        {
-
+        public void setPlayer(DynamicMenu dynamicMenu)
+        {  
+            currentUser = ActiveUsers[dynamicMenu.MakeMenuChoice(ActiveUsers, "Select User")];
+            if (currentUser.UserName == "New Player")
+            {
+                //take name input, consider enum
+            }
         }
 
         public void DisplayWord(Word word)
@@ -97,8 +103,10 @@ namespace WordleConsoleApp.Utilities
                     Console.WriteLine("Faulty guess, make a guess no longer than the scrambled word.");
                     Formatter.TabToPos(Tab, StaticRows, Attempt+1);
                     Console.WriteLine("Press Enter to guess again");
+                    Console.CursorVisible = false;
                     Console.ReadLine();
-                    Formatter.ClearRow(Tab, StaticRows, Attempt, 2);
+                    Formatter.ClearRow(Tab, StaticRows, Attempt, 4);
+                    Console.CursorVisible = true;
                 }
             }
         }  

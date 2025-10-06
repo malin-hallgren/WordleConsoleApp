@@ -8,5 +8,12 @@ namespace WordleConsoleApp.User
 {
     internal class Manager : BasicUser
     {
+        public string Password { get; private set; } = "admin_000";
+
+        public Manager()
+        {
+            UserName = "Admin";
+            IsAdmin = true;
+        }
     }
 }

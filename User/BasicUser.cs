@@ -11,7 +11,7 @@ namespace WordleConsoleApp.User
         public string UserName { get; set; }
         public bool IsCurrentUser { get; set; }
         
-
+        public bool IsAdmin {  get; set; }
         public override string ToString()
         {
             return UserName;
