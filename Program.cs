@@ -1,4 +1,5 @@
-﻿using WordleConsoleApp.Utilities;
+﻿using WordleConsoleApp.User;
+using WordleConsoleApp.Utilities;
 using WordleConsoleApp.Words;
 
 namespace WordleConsoleApp
@@ -15,6 +16,7 @@ namespace WordleConsoleApp
             //create new. Save old player. List<BasicUser>? ActiveUsers, go by isCurrent bool
             while (menu.StartMenu(word, game))
             {
+                
                 word.ScrambleWord(word.SelectedWord);
                 game.DisplayWord(word);
 

@@ -10,7 +10,7 @@ namespace WordleConsoleApp.Utilities
 {
     internal class Game
     {
-        
+        public List<BasicUser> ActiveUsers { get; set; }
         public bool GameRunning { get; set; }
 
         public int Attempt {  get; private set; }
@@ -30,6 +30,11 @@ namespace WordleConsoleApp.Utilities
             Attempt = 0;
             MaxAttempts = 5;
             isCorrect = false;
+        }
+
+        public void setPlayer()
+        {
+
         }
 
         public void DisplayWord(Word word)
@@ -55,7 +60,7 @@ namespace WordleConsoleApp.Utilities
                 {
                     Formatter.TabToPos(Tab + i, StaticRows, Attempt);
                     Formatter.HighlightOutput(guess[i], ConsoleColor.Green);
-                    Player.UpdateScore(Attempt, MaxAttempts, target.Length);
+                    //Player.UpdateScore(Attempt, MaxAttempts, target.Length);
                 }
                 else
                 {
