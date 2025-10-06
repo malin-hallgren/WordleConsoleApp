@@ -35,14 +35,11 @@ namespace WordleConsoleApp.Utilities
         }
 
         public void setPlayer(DynamicMenu dynamicMenu)
-        {
-            if (ActiveUsers.Count > 2)
+        {  
+            currentUser = ActiveUsers[dynamicMenu.MakeMenuChoice(ActiveUsers, "Select User")];
+            if (currentUser.UserName == "New Player")
             {
-                ActiveUsers.Add(new Player());
-            }
-            else
-            {
-                currentUser = ActiveUsers[dynamicMenu.MakeMenuChoice(ActiveUsers, "Select User")];
+                //take name input, consider enum
             }
         }
 
