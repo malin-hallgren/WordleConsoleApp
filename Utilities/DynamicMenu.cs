@@ -20,8 +20,13 @@ namespace WordleConsoleApp.Utilities
             int selected = 0;
             int prevSelected = selected;
             Console.Clear();
-            var newPlayerOption = new Player();
-            options.Add(newPlayerOption);
+            if (!options.Any(user => user.IsShellUser == true))
+            {
+                var newPlayerOption = new Player();
+                newPlayerOption.IsShellUser = true;
+                options.Add(newPlayerOption);
+            }
+            
 
             DrawMenu(options, selected, prevSelected, title);
 
