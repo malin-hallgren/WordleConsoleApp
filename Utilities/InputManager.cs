@@ -23,13 +23,13 @@ namespace WordleConsoleApp.Utilities
                 }
                 else
                 {
-                    Formatter.TabToPos(tab, staticRows, attempts);
+                    FormatManager.TabToPos(tab, staticRows, attempts);
                     Console.WriteLine("Faulty guess, make a guess no longer than the scrambled word.");
-                    Formatter.TabToPos(tab, staticRows, attempts + 1);
+                    FormatManager.TabToPos(tab, staticRows, attempts + 1);
                     Console.WriteLine("Press Enter to guess again");
                     Console.CursorVisible = false;
                     Console.ReadLine();
-                    Formatter.ClearRow(tab, staticRows, attempts, 4);
+                    FormatManager.ClearRow(tab, staticRows, attempts, 4);
                     Console.CursorVisible = true;
                 }
             }

@@ -27,18 +27,19 @@ namespace WordleConsoleApp
                     game.MakeGuess(word);
                 }
 
-                Formatter.TabToPos(0, game.StaticRows, game.Attempt + 1);
+                FormatManager.TabToPos(0, game.StaticRows, game.Attempt + 1);
                 if (game.isCorrect)
                 {
-                    Console.WriteLine("Good job! You guessed the word!\n");
+                    Console.WriteLine("\nGood job! You guessed the word!\n");
+                    game.CurrentPlayer.CheckNewHighScore();
                 }
                 else
                 {
                     Console.WriteLine("Sorry you did not guess the word.");
-                    Console.WriteLine($"The word was: {word.SelectedWord}\n");
+                    Console.WriteLine($"The word was: {word.SelectedWord}");
                 }
 
-                Console.WriteLine("Press Enter to return to menu...");
+                Console.WriteLine("\nPress Enter to return to menu...");
                 Console.ReadLine();
             }
         }
