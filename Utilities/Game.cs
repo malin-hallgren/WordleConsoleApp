@@ -37,21 +37,26 @@ namespace WordleConsoleApp.Utilities
         public void setPlayer(DynamicMenu dynamicMenu)
         {  
             currentUser = ActiveUsers[dynamicMenu.MakeMenuChoice(ActiveUsers, "Select User")];
-            if (currentUser.UserName == "New Player")
+            currentUser.IsCurrentUser = true;
+
+            if (currentUser.IsShellUser)
             {
-                //take name input, consider enum
+                Console.WriteLine("Please input a username:");
+                currentUser.UserName = InputManager.CheckUserNameInput();
+                currentUser.IsShellUser = false;
+                Console.Clear();
             }
         }
 
         public void DisplayWord(Word word)
         {
-            Console.WriteLine($"Guess the word!\n\n\t{word.ScrambledWord}\n");
+            Console.WriteLine($"Guess the word {currentUser.UserName}!\n\n\t{word.ScrambledWord}\n");
         }
 
         public void MakeGuess(Word word)
         {
             Formatter.TabToPos(Tab, StaticRows, Attempt);
-            CurrentGuess = GuessInput(word.ScrambledWord.Length, word.ScrambledWord.Length + 1);
+            CurrentGuess = InputManager.GuessInput(word.ScrambledWord.Length, word.ScrambledWord.Length + 1, Tab, StaticRows, Attempt);
             isCorrect = CheckGuess(CurrentGuess, word.SelectedWord);
             Attempt += 1;
         }
@@ -82,32 +87,6 @@ namespace WordleConsoleApp.Utilities
             else
             {
                 return false;
-            }
-        }
-
-        public string GuessInput(int minRange, int maxRange)
-        {
-            string output = "";
-
-            while (true)
-            {
-                output = Console.ReadLine();
-
-                if (output.Length >= minRange && output.Length < maxRange)
-                {
-                    return output;
-                }
-                else
-                {
-                    Formatter.TabToPos(Tab, StaticRows, Attempt);
-                    Console.WriteLine("Faulty guess, make a guess no longer than the scrambled word.");
-                    Formatter.TabToPos(Tab, StaticRows, Attempt+1);
-                    Console.WriteLine("Press Enter to guess again");
-                    Console.CursorVisible = false;
-                    Console.ReadLine();
-                    Formatter.ClearRow(Tab, StaticRows, Attempt, 4);
-                    Console.CursorVisible = true;
-                }
             }
         }  
     }

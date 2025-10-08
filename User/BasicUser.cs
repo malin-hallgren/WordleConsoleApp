@@ -12,9 +12,19 @@ namespace WordleConsoleApp.User
         public bool IsCurrentUser { get; set; }
         
         public bool IsAdmin {  get; set; }
+
+        public bool IsShellUser { get; set; }
         public override string ToString()
         {
-            return UserName;
+            return $"User : {UserName}\nCurrent User : {IsCurrentUser}\nAdmin : {IsAdmin}";
+        }
+
+        public static void PrintUserList(List<BasicUser> users)
+        {
+            foreach (var user in users)
+            {
+                Console.WriteLine(user);
+            }
         }
     }
 }

@@ -9,8 +9,6 @@ namespace WordleConsoleApp.Utilities
 {
     internal class Formatter
     {
-
-        //look inot passing string and casting to ConsoleColor Enum
         public static void HighlightOutput<T>(T input, ConsoleColor color)
         {
             
