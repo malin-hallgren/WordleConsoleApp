@@ -12,9 +12,11 @@ namespace WordleConsoleApp.Utilities
     {
         public List<BasicUser> ActiveUsers { get; set; } = new List<BasicUser>();
 
-        public BasicUser currentUser { get; set; }
-        public bool GameRunning { get; set; }
+        private BasicUser CurrentUser { get; set; }
 
+        public Player CurrentPlayer { get; set; }
+        private uint AmountCorrectLetters { get; set; }
+        
         public int Attempt {  get; private set; }
 
         public int MaxAttempts { get; private set; }
@@ -32,62 +34,133 @@ namespace WordleConsoleApp.Utilities
             Attempt = 0;
             MaxAttempts = 5;
             isCorrect = false;
+            AmountCorrectLetters = 0;
         }
 
         public void setPlayer(DynamicMenu dynamicMenu)
         {  
-            currentUser = ActiveUsers[dynamicMenu.MakeMenuChoice(ActiveUsers, "Select User")];
-            currentUser.IsCurrentUser = true;
+            CurrentUser = ActiveUsers[dynamicMenu.MakeMenuChoice(ActiveUsers, "Select User")];
+            CurrentUser.IsCurrentUser = true;
 
-            if (currentUser.IsShellUser)
+            if (CurrentUser is Player)
+            {
+                CurrentPlayer = (Player)CurrentUser;
+            }
+
+            if (CurrentUser.IsShellUser)
             {
                 Console.WriteLine("Please input a username:");
-                currentUser.UserName = InputManager.CheckUserNameInput();
-                currentUser.IsShellUser = false;
+                CurrentUser.UserName = InputManager.CheckUserNameInput();
+                CurrentUser.IsShellUser = false;
                 Console.Clear();
             }
         }
 
         public void DisplayWord(Word word)
         {
-            Console.WriteLine($"Guess the word {currentUser.UserName}!\n\n\t{word.ScrambledWord}\n");
+            Console.WriteLine($"Guess the word {CurrentUser.UserName}!\n\n\t{word.ScrambledWord}\n");
         }
 
+        //Takes guess input and sends it into the checker to see if the guess was correct
         public void MakeGuess(Word word)
         {
-            Formatter.TabToPos(Tab, StaticRows, Attempt);
+            FormatManager.TabToPos(Tab, StaticRows, Attempt);
             CurrentGuess = InputManager.GuessInput(word.ScrambledWord.Length, word.ScrambledWord.Length + 1, Tab, StaticRows, Attempt);
             isCorrect = CheckGuess(CurrentGuess, word.SelectedWord);
             Attempt += 1;
         }
 
         
-
+        //Prints out the current guess with highlights for correct letters and checks if the guess is fully correct
         private bool CheckGuess(string guess, string target)
         {
+            int guessScore = 0;
+            int addedCorrectLetters = 0;
+            uint currentCorrectLetters = 0;
+
             for (int i = 0; i < target.Length; i++)
             {
                 if (guess[i] == target[i])
                 {
-                    Formatter.TabToPos(Tab + i, StaticRows, Attempt);
-                    Formatter.HighlightOutput(guess[i], ConsoleColor.Green);
-                    //Player.UpdateScore(Attempt, MaxAttempts, target.Length);
+                    FormatManager.TabToPos(Tab + i, StaticRows, Attempt);
+                    FormatManager.HighlightOutput(guess[i], ConsoleColor.Green);
+                    currentCorrectLetters++;
+                    
                 }
                 else
                 {
-                    Formatter.TabToPos(Tab + i, StaticRows, Attempt);
+                    FormatManager.TabToPos(Tab + i, StaticRows, Attempt);
                     Console.Write(guess[i]);
                 }
             }
+            if (currentCorrectLetters > AmountCorrectLetters)
+            {
+                addedCorrectLetters = (int)currentCorrectLetters - (int)AmountCorrectLetters;
+                AmountCorrectLetters = currentCorrectLetters;
+                currentCorrectLetters = 0;
+            }
+
+            guessScore = UpdateScore(addedCorrectLetters, Attempt, MaxAttempts, CurrentPlayer);
 
             if (guess == target)
             {
+                PrintScore(guessScore, true, CurrentPlayer);
                 return true;
             }
             else
             {
+                PrintScore(guessScore, false, CurrentPlayer);
                 return false;
             }
-        }  
+        }
+
+        //Updates the players score for the current guess based on the amount of newly correct letters
+        //also sets score in player object
+        private int  UpdateScore(int newCorrectLetters, int attempt, int maxAttempt, Player player)
+        {
+            int guessScore = 0;
+            
+            guessScore += 10 * (maxAttempt - attempt) * newCorrectLetters;
+            
+            player.CurrentScore += guessScore;
+            return guessScore;
+        }
+
+        //Print out the score next to the guess, if the guess is correct prints the final score below all the guess scores
+        private void PrintScore(int guessScore, bool isCorrect, Player player)
+        {
+            char[] output = new char[5];
+            Array.Fill(output, ' ');
+            string printableScore;
+            int startIndex;
+
+            printableScore = guessScore.ToString();
+            startIndex = output.Length - printableScore.Length - 1;
+
+            output[startIndex - 1] = '+';
+
+            int printableIndex = 0;
+
+            for (int i = startIndex + 1; i < output.Length; i++)
+            {
+                
+                output[i] = printableScore[printableIndex];
+                printableIndex++;
+            }
+
+            FormatManager.TabToPos(2 * Tab + Tab / 2, StaticRows, Attempt);
+            foreach (char c in output)
+            {
+                Console.Write(c);
+            }
+
+            //The tab maths are off the chart, but it is working, and it is staying relative to something, meaning if we chang the value of Tab
+            //we don't have to change that much... the +2 is technically Tab / 4
+            if (isCorrect)
+            {
+                FormatManager.TabToPos((2 * Tab) + (Tab / 2) + 2, StaticRows, Attempt +1);
+                FormatManager.HighlightOutput(player.CurrentScore, ConsoleColor.DarkYellow);
+            }
+        }
     }
 }

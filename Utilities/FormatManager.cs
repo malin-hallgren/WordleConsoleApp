@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WordleConsoleApp.Utilities
 {
-    internal class Formatter
+    internal class FormatManager
     {
         public static void HighlightOutput<T>(T input, ConsoleColor color)
         {
