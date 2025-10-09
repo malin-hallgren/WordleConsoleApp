@@ -1,5 +1,6 @@
 ﻿using WordleConsoleApp.User;
 using WordleConsoleApp.Utilities;
+using WordleConsoleApp.Utilities.Menus;
 using WordleConsoleApp.Words;
 
 namespace WordleConsoleApp
@@ -10,17 +11,19 @@ namespace WordleConsoleApp
         {
             var game = new Game();
             var word = new Word();
-            var menu = new MenuUI();
-            var dynamicMenu = new DynamicMenu();
+            var startMenu = new StartMenu(); //make this a start menu, alternatively, run start menu from Game
+            var userSelectMenu = new UserSelectMenu(); //Make this User Select Menu, or make the menu static?
             game.ActiveUsers.Add(new Manager());
-            
+
+            game.setPlayer(userSelectMenu);
+
             //create new player object, ask if user want to play as this player or 
             //create new. Save old player. List<BasicUser>? ActiveUsers, go by isCurrent bool
-            while (menu.StartMenu(word, game))
+            while (startMenu.StartMenuSelector(word, game))
             {
-                game.setPlayer(dynamicMenu);
+                //game.setPlayer(userSelectMenu);
                 word.ScrambleWord(word.SelectedWord);
-                game.DisplayWord(word);
+                word.DisplayWord(game.CurrentPlayer);
 
                 while(game.Attempt < game.MaxAttempts && !game.isCorrect)
                 {

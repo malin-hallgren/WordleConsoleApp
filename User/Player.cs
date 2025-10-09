@@ -20,6 +20,13 @@ namespace WordleConsoleApp.User
             CurrentScore = currentScore;
         }
         
+        public void UpdateShellPlayerName(Player player)
+        {
+            Console.WriteLine("Please input a username:");
+            player.UserName = InputManager.CheckUserNameInput();
+            player.IsShellUser = false;
+            Console.Clear();
+        }
 
         public void CheckNewHighScore()
         {
