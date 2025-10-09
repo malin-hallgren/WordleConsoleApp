@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WordleConsoleApp.User;
 
 namespace WordleConsoleApp.Words
 {
@@ -63,6 +64,11 @@ namespace WordleConsoleApp.Words
             }
             
             ScrambledWord = new string(scrambleArray);
+        }
+
+        public void DisplayWord(Player player)
+        {
+            Console.WriteLine($"Guess the word {player.UserName}!\n\n\t{ScrambledWord}\n");
         }
     }
 }

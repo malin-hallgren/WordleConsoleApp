@@ -16,7 +16,7 @@ namespace WordleConsoleApp.User
         public bool IsShellUser { get; set; }
         public override string ToString()
         {
-            return $"User : {UserName}\nCurrent User : {IsCurrentUser}\nAdmin : {IsAdmin}";
+            return $"{UserName}";
         }
 
         public static void PrintUserList(List<BasicUser> users)

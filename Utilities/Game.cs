@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WordleConsoleApp.User;
+using WordleConsoleApp.Utilities.Menus;
 using WordleConsoleApp.Words;
 
 namespace WordleConsoleApp.Utilities
@@ -15,6 +16,8 @@ namespace WordleConsoleApp.Utilities
         private BasicUser CurrentUser { get; set; }
 
         public Player CurrentPlayer { get; set; }
+
+        public Manager CurrentManager { get; set; }
         private uint AmountCorrectLetters { get; set; }
         
         public int Attempt {  get; private set; }
@@ -37,30 +40,36 @@ namespace WordleConsoleApp.Utilities
             AmountCorrectLetters = 0;
         }
 
-        public void setPlayer(DynamicMenu dynamicMenu)
-        {  
-            CurrentUser = ActiveUsers[dynamicMenu.MakeMenuChoice(ActiveUsers, "Select User")];
-            CurrentUser.IsCurrentUser = true;
+        public void setPlayer(UserSelectMenu userSelectMenu)
+        {
+            userSelectMenu.NewPlayerOption(ActiveUsers);
+            CurrentUser = ActiveUsers[MenuUI.MakeMenuChoice(ActiveUsers, "Select User")];
 
+            foreach (BasicUser user in ActiveUsers)
+            {
+                user.IsCurrentUser = false;
+            }
+            CurrentUser.IsCurrentUser = true;
+            
+
+            //This needs to stay, but potentially add one for manager too so we get the correct types 
             if (CurrentUser is Player)
             {
                 CurrentPlayer = (Player)CurrentUser;
-            }
 
-            if (CurrentUser.IsShellUser)
+                if (CurrentPlayer.IsShellUser)
+                {
+                    CurrentPlayer.UpdateShellPlayerName(CurrentPlayer);
+                }
+            }
+            else
             {
-                Console.WriteLine("Please input a username:");
-                CurrentUser.UserName = InputManager.CheckUserNameInput();
-                CurrentUser.IsShellUser = false;
-                Console.Clear();
+                CurrentManager = (Manager)CurrentUser;
             }
-        }
 
-        public void DisplayWord(Word word)
-        {
-            Console.WriteLine($"Guess the word {CurrentUser.UserName}!\n\n\t{word.ScrambledWord}\n");
+            StartMenu.Title += CurrentUser.UserName;
         }
-
+        
         //Takes guess input and sends it into the checker to see if the guess was correct
         public void MakeGuess(Word word)
         {
