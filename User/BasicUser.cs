@@ -19,6 +19,10 @@ namespace WordleConsoleApp.User
             return $"{UserName}";
         }
 
+        /// <summary>
+        /// Prints a list of all the users in a list of BasicUsers
+        /// </summary>
+        /// <param name="users">The list of which contents will be printed</param>
         public static void PrintUserList(List<BasicUser> users)
         {
             foreach (var user in users)

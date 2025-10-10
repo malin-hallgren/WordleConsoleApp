@@ -12,6 +12,13 @@ namespace WordleConsoleApp.Utilities.Menus
     {
         public static string Title { get; set; } = "Welcome to WordGuess, ";
 
+
+        /// <summary>
+        /// Initializes the StartMenu sequence
+        /// </summary>
+        /// <param name="word">the Word object for picking a word</param>
+        /// <param name="game">the Game object to re/set game parameters</param>
+        /// <returns>A bool to start the game, or quit it</returns>
         public bool StartMenuSelector(Word word, Game game)
         {
             while (true)

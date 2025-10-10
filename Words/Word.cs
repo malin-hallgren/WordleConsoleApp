@@ -22,12 +22,19 @@ namespace WordleConsoleApp.Words
             PossibleWords = PrecursorPossibleWords.ToList();
         }
 
-        //Grabs the correct path for the file and makes it relative 
+        /// <summary>
+        /// Grabs the correct, relative, path to the file WordLibrary
+        /// </summary>
+        /// <returns>a path to the correct directory</returns>
         private string ReadFileDirectory()
         {
             string baseDirectory = AppContext.BaseDirectory;
             return Path.Combine(baseDirectory, @"..\..\..\\Words\WordLibrary.txt");
         }
+
+        /// <summary>
+        /// picks a random word from the list of possible words
+        /// </summary>
         public void PickWord()
         {
             var random = new Random();
@@ -36,6 +43,10 @@ namespace WordleConsoleApp.Words
             SelectedWord = PossibleWords[randomIndex].ToLower();
         }
 
+        /// <summary>
+        /// Scrambles the selected word for the player to guess
+        /// </summary>
+        /// <param name="word">the word to be scramnbled</param>
         public void ScrambleWord(string word)
         {
             Random random = new Random();
@@ -66,6 +77,10 @@ namespace WordleConsoleApp.Words
             ScrambledWord = new string(scrambleArray);
         }
 
+        /// <summary>
+        /// Displays the scrambled word
+        /// </summary>
+        /// <param name="player">the current player object</param>
         public void DisplayWord(Player player)
         {
             Console.WriteLine($"Guess the word {player.UserName}!\n\n\t{ScrambledWord}\n");

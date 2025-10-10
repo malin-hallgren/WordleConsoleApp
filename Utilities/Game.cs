@@ -32,6 +32,10 @@ namespace WordleConsoleApp.Utilities
 
         public int StaticRows { get; private set; } = 4;
 
+        /// <summary>
+        /// Resets the game to a game start state
+        /// </summary>
+        /// <param name="game">the game object which to reset</param>
         public void SetGame(Game game)
         {
             Attempt = 0;
@@ -40,6 +44,10 @@ namespace WordleConsoleApp.Utilities
             AmountCorrectLetters = 0;
         }
 
+        /// <summary>
+        /// Sets up which User to play as and casts to corect type for using subclass specific methods
+        /// </summary>
+        /// <param name="userSelectMenu">the menu that will need to be displayed</param>
         public void setPlayer(UserSelectMenu userSelectMenu)
         {
             userSelectMenu.NewPlayerOption(ActiveUsers);

@@ -25,7 +25,7 @@ namespace WordleConsoleApp
                 word.ScrambleWord(word.SelectedWord);
                 word.DisplayWord(game.CurrentPlayer);
 
-                while(game.Attempt < game.MaxAttempts && !game.isCorrect)
+                while (game.Attempt < game.MaxAttempts && !game.isCorrect)
                 {
                     game.MakeGuess(word);
                 }
