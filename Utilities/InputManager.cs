@@ -8,8 +8,16 @@ namespace WordleConsoleApp.Utilities
 {
     internal class InputManager
     {
-
-        public static string GuessInput(int minRange, int maxRange, int tab, int staticRows, int attempts)
+        /// <summary>
+        /// Takes input from the Console and checks that it is valid
+        /// </summary>
+        /// <param name="minRange">the shortest the input may be</param>
+        /// <param name="maxRange">the longest the input may be (exclusive!)</param>
+        /// <param name="tab">amount of tabs to start printing message</param>
+        /// <param name="staticRows">amount of static rows down to start printing message</param>
+        /// <param name="attempts">amount of variable rows down to start printing message</param>
+        /// <returns>a valid string input</returns>
+        public static string GuessInput(int minRange, int maxRange, int attempts)
         {
             string output = "";
 
@@ -23,18 +31,21 @@ namespace WordleConsoleApp.Utilities
                 }
                 else
                 {
-                    FormatManager.TabToPos(tab, staticRows, attempts);
+                    FormatManager.TabToPos(attempts);
                     Console.WriteLine("Faulty guess, make a guess no longer than the scrambled word.");
-                    FormatManager.TabToPos(tab, staticRows, attempts + 1);
+                    FormatManager.TabToPos(attempts + 1);
                     Console.WriteLine("Press Enter to guess again");
                     Console.CursorVisible = false;
                     Console.ReadLine();
-                    FormatManager.ClearRow(tab, staticRows, attempts, 4);
+                    FormatManager.ClearRow(attempts, 4);
                     Console.CursorVisible = true;
                 }
             }
         }
-
+        /// <summary>
+        /// Checks that string input is not null or whitespace
+        /// </summary>
+        /// <returns></returns>
         public static string CheckUserNameInput()
         {
             while (true)
