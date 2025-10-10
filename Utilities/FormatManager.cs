@@ -31,7 +31,7 @@ namespace WordleConsoleApp.Utilities
         /// <param name="tab">How many tabs in the cursor should be set as</param>
         /// <param name="staticRows">amount of static, unchanging rows</param>
         /// <param name="variableRows">Amount of rows that have dynamically been added to the window</param>
-        public static void TabToPos(int tab, int staticRows, int variableRows)
+        public static void TabToPos(int variableRows, int tab = 8, int staticRows = 4)
         {
             int row = staticRows + variableRows;
             Console.SetCursorPosition(tab, row);
@@ -44,9 +44,9 @@ namespace WordleConsoleApp.Utilities
         /// <param name="tab">amount of tabs in to start clearing. Usually 0 for a full row</param>
         /// <param name="staticRows">amount of static, unchanging rows</param>
         /// <param name="variableRows">Amount of rows that have dynamically been added to the window</param>
-        public static void ClearRow(int tab, int staticRows, int variableRows)
+        public static void ClearRow(int variableRows)
         {
-            TabToPos(tab, staticRows, variableRows);
+            TabToPos(variableRows);
             Console.Write(new string(' ', Console.BufferWidth));
         }
 
@@ -57,13 +57,13 @@ namespace WordleConsoleApp.Utilities
         /// <param name="staticRows">amount of static, unchanging rows</param>
         /// <param name="variableRows">Amount of rows that have dynamically been added to the window</param>
         /// <param name="numOfRows">Amount of rows to be cleared</param>
-        public static void ClearRow(int tab, int staticRows, int variableRows, int numOfRows)
+        public static void ClearRow(int variableRows, int numOfRows)
         {
             for (int i = 0; i < numOfRows; i++)
             {
-                ClearRow(tab, staticRows, variableRows + i);
+                ClearRow(variableRows + i);
             }
-            TabToPos(tab, staticRows, variableRows);
+            TabToPos(variableRows);
         }
     }
 }

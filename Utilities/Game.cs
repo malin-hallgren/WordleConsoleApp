@@ -28,7 +28,7 @@ namespace WordleConsoleApp.Utilities
 
         public bool isCorrect { get; private set; }
 
-        private int Tab { get; set; } = 8;
+        public int Tab { get; private set; } = 8;
 
         public int StaticRows { get; private set; } = 4;
 
@@ -78,17 +78,25 @@ namespace WordleConsoleApp.Utilities
             StartMenu.Title += CurrentUser.UserName;
         }
         
-        //Takes guess input and sends it into the checker to see if the guess was correct
+        /// <summary>
+        /// Allows player to make a guess
+        /// </summary>
+        /// <param name="word">The current word object at play</param>
         public void MakeGuess(Word word)
         {
-            FormatManager.TabToPos(Tab, StaticRows, Attempt);
-            CurrentGuess = InputManager.GuessInput(word.ScrambledWord.Length, word.ScrambledWord.Length + 1, Tab, StaticRows, Attempt);
+            FormatManager.TabToPos(Attempt);
+            CurrentGuess = InputManager.GuessInput(word.ScrambledWord.Length, word.ScrambledWord.Length + 1, Attempt);
             isCorrect = CheckGuess(CurrentGuess, word.SelectedWord);
             Attempt += 1;
         }
 
         
-        //Prints out the current guess with highlights for correct letters and checks if the guess is fully correct
+        /// <summary>
+        /// Checks the player's guess against the target word and prints a version highlighting correct letters and adds to the player's score
+        /// </summary>
+        /// <param name="guess">the player's guess</param>
+        /// <param name="target">the current target word</param>
+        /// <returns>returns true if guess is correct</returns>
         private bool CheckGuess(string guess, string target)
         {
             int guessScore = 0;
@@ -99,14 +107,14 @@ namespace WordleConsoleApp.Utilities
             {
                 if (guess[i] == target[i])
                 {
-                    FormatManager.TabToPos(Tab + i, StaticRows, Attempt);
+                    FormatManager.TabToPos(Attempt, Tab + i);
                     FormatManager.HighlightOutput(guess[i], ConsoleColor.Green);
                     currentCorrectLetters++;
                     
                 }
                 else
                 {
-                    FormatManager.TabToPos(Tab + i, StaticRows, Attempt);
+                    FormatManager.TabToPos(Attempt, Tab + i);
                     Console.Write(guess[i]);
                 }
             }
@@ -131,8 +139,14 @@ namespace WordleConsoleApp.Utilities
             }
         }
 
-        //Updates the players score for the current guess based on the amount of newly correct letters
-        //also sets score in player object
+        /// <summary>
+        /// Updates the current player's score
+        /// </summary>
+        /// <param name="newCorrectLetters">amount of correct letters in surplus from the last guess</param>
+        /// <param name="attempt">how many attempts have been made</param>
+        /// <param name="maxAttempt">the max amount of attempts that may be made</param>
+        /// <param name="player">the current player</param>
+        /// <returns>the calculated score for this guess</returns>
         private int  UpdateScore(int newCorrectLetters, int attempt, int maxAttempt, Player player)
         {
             int guessScore = 0;
@@ -143,8 +157,13 @@ namespace WordleConsoleApp.Utilities
             return guessScore;
         }
 
-        //Print out the score next to the guess, if the guess is correct prints the final score below all the guess scores
-        private void PrintScore(int guessScore, bool isCorrect, Player player)
+        /// <summary>
+        /// Prints the score for the guess
+        /// </summary>
+        /// <param name="guessScore">the score to print</param>
+        /// <param name="isCorrect">whether the guess is completely correct or not</param>
+        /// <param name="player">the current player</param>
+        private void PrintScore(int guessScore, bool isCorrect, Player player) //does this need a player object?
         {
             char[] output = new char[5];
             Array.Fill(output, ' ');
@@ -165,7 +184,7 @@ namespace WordleConsoleApp.Utilities
                 printableIndex++;
             }
 
-            FormatManager.TabToPos(2 * Tab + Tab / 2, StaticRows, Attempt);
+            FormatManager.TabToPos(Attempt, 2 * Tab + Tab / 2, StaticRows);
             foreach (char c in output)
             {
                 Console.Write(c);
@@ -175,7 +194,7 @@ namespace WordleConsoleApp.Utilities
             //we don't have to change that much... the +2 is technically Tab / 4
             if (isCorrect)
             {
-                FormatManager.TabToPos((2 * Tab) + (Tab / 2) + 2, StaticRows, Attempt +1);
+                FormatManager.TabToPos(Attempt + 1, (2 * Tab) + (Tab / 2) + 2, StaticRows);
                 FormatManager.HighlightOutput(player.CurrentScore, ConsoleColor.DarkYellow);
             }
         }

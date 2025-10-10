@@ -13,9 +13,9 @@ namespace WordleConsoleApp
             var word = new Word();
             var startMenu = new StartMenu(); //make this a start menu, alternatively, run start menu from Game
             var userSelectMenu = new UserSelectMenu(); //Make this User Select Menu, or make the menu static?
-            game.ActiveUsers.Add(new Manager());
+            game.ActiveUsers.Add(new Manager()); //does this need to happen here? cand we create this like the new player 
 
-            game.setPlayer(userSelectMenu);
+            game.setPlayer(userSelectMenu); // could this be returning a player or manager into var user
 
             //create new player object, ask if user want to play as this player or 
             //create new. Save old player. List<BasicUser>? ActiveUsers, go by isCurrent bool
@@ -30,7 +30,7 @@ namespace WordleConsoleApp
                     game.MakeGuess(word);
                 }
 
-                FormatManager.TabToPos(0, game.StaticRows, game.Attempt + 1);
+                FormatManager.TabToPos(game.Attempt + 1, 0);
                 if (game.isCorrect)
                 {
                     Console.WriteLine("\nGood job! You guessed the word!\n");
