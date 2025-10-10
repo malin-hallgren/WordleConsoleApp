@@ -12,16 +12,14 @@ namespace WordleConsoleApp
             var game = new Game();
             var word = new Word();
             var startMenu = new StartMenu(); //make this a start menu, alternatively, run start menu from Game
-            var userSelectMenu = new UserSelectMenu(); //Make this User Select Menu, or make the menu static?
-            game.ActiveUsers.Add(new Manager()); //does this need to happen here? cand we create this like the new player 
+            //game.ActiveUsers.Add(new Manager()); //does this need to happen here? cand we create this like the new player 
 
-            game.setPlayer(userSelectMenu); // could this be returning a player or manager into var user
+            game.setPlayer(); // could this be returning a player or manager into var user
 
             //create new player object, ask if user want to play as this player or 
             //create new. Save old player. List<BasicUser>? ActiveUsers, go by isCurrent bool
             while (startMenu.StartMenuSelector(word, game))
             {
-                //game.setPlayer(userSelectMenu);
                 word.ScrambleWord(word.SelectedWord);
                 word.DisplayWord(game.CurrentPlayer);
 

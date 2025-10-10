@@ -48,9 +48,14 @@ namespace WordleConsoleApp.Utilities
         /// Sets up which User to play as and casts to corect type for using subclass specific methods
         /// </summary>
         /// <param name="userSelectMenu">the menu that will need to be displayed</param>
-        public void setPlayer(UserSelectMenu userSelectMenu)
+        public void setPlayer()
         {
-            userSelectMenu.NewPlayerOption(ActiveUsers);
+            
+            UserSelectMenu.NewPlayerOption(ActiveUsers);
+            UserSelectMenu.NewManagerOption(ActiveUsers);
+            ActiveUsers.Sort();
+            
+
             CurrentUser = ActiveUsers[MenuUI.MakeMenuChoice(ActiveUsers, "Select User")];
 
             foreach (BasicUser user in ActiveUsers)
