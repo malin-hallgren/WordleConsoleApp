@@ -14,7 +14,7 @@ namespace WordleConsoleApp.Utilities.Menus
         /// Checks if there is currently a new player option in the list of active users, and adds one if there isn't
         /// </summary>
         /// <param name="users">The list of users to check</param>
-        public void NewPlayerOption(List<BasicUser> users)
+        private static void NewPlayerOption(List<BasicUser> users)
         {
             if (!users.Any(user => user.IsShellUser == true))
             {
@@ -22,6 +22,26 @@ namespace WordleConsoleApp.Utilities.Menus
                 newPlayerOption.IsShellUser = true;
                 users.Add(newPlayerOption);
             }
+        }
+
+        /// <summary>
+        /// Checks if there is an admin in the current list, and adds on if not
+        /// </summary>
+        /// <param name="users">The list to check</param>
+        private static void NewManagerOption(List<BasicUser> users)
+        {
+            if (!users.Any(user => user.IsAdmin == true))
+            {
+                var newManager = new Manager();
+                users.Add(newManager);
+            }
+        }
+
+        public static void SetUpUserList(List<BasicUser> users)
+        {
+            NewPlayerOption(users);
+            NewManagerOption(users);
+            users.Sort();
         }
     }
 }

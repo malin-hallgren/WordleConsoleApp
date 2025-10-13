@@ -18,6 +18,8 @@ namespace WordleConsoleApp.Utilities
         public Player CurrentPlayer { get; set; }
 
         public Manager CurrentManager { get; set; }
+
+        public bool isOngoing { get; set; } = true;
         private uint AmountCorrectLetters { get; set; }
         
         public int Attempt {  get; private set; }
@@ -48,9 +50,10 @@ namespace WordleConsoleApp.Utilities
         /// Sets up which User to play as and casts to corect type for using subclass specific methods
         /// </summary>
         /// <param name="userSelectMenu">the menu that will need to be displayed</param>
-        public void setPlayer(UserSelectMenu userSelectMenu)
+        public BasicUser SetPlayer()
         {
-            userSelectMenu.NewPlayerOption(ActiveUsers);
+            UserSelectMenu.SetUpUserList(ActiveUsers);
+
             CurrentUser = ActiveUsers[MenuUI.MakeMenuChoice(ActiveUsers, "Select User")];
 
             foreach (BasicUser user in ActiveUsers)
@@ -68,14 +71,16 @@ namespace WordleConsoleApp.Utilities
                 if (CurrentPlayer.IsShellUser)
                 {
                     CurrentPlayer.UpdateShellPlayerName(CurrentPlayer);
+                    StartMenu.Title = $"Welcome to WordGuess, {CurrentUser.UserName}!";
                 }
             }
             else
             {
                 CurrentManager = (Manager)CurrentUser;
+                StartMenu.Title = $"Welcome to WordGuess, {CurrentUser.UserName}! What would you like to manage?";
             }
-
-            StartMenu.Title += CurrentUser.UserName;
+            return CurrentUser;
+            
         }
         
         /// <summary>

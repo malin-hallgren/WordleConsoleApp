@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WordleConsoleApp.User
 {
-    internal abstract class BasicUser
+    internal abstract class BasicUser : IComparable<BasicUser>
     {
         public string UserName { get; set; }
         public bool IsCurrentUser { get; set; }
@@ -29,6 +29,16 @@ namespace WordleConsoleApp.User
             {
                 Console.WriteLine(user);
             }
+        }
+
+        public int CompareTo(BasicUser? user)
+        {
+            
+            var comparison = user as BasicUser;
+
+
+            return comparison.IsAdmin.CompareTo(this.IsAdmin);
+
         }
     }
 }
