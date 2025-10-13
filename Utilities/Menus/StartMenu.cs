@@ -36,8 +36,7 @@ namespace WordleConsoleApp.Utilities.Menus
                         return true;
                     case 1:
                         Console.Clear();
-                        Console.WriteLine("coming soon");
-                        Console.ReadLine();
+                        game.SetPlayer();
                         break;
                     case 2:
                         Console.Clear();
@@ -45,6 +44,7 @@ namespace WordleConsoleApp.Utilities.Menus
                         Console.ReadLine();
                         break;
                     case 3:
+                        game.isOngoing = false;
                         return false;
                 }
             }
