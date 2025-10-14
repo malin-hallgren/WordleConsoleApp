@@ -10,12 +10,12 @@ namespace WordleConsoleApp.Utilities.Menus
     internal class ManagerMenu : MenuUI
     {
         public static string Title { get; set; } = "Welcome to WordGuess, what would you like to manage, ";
-        public bool StartMenuSelector(Word word, Game game)
+        public bool ManagerMenuSelector(Word word, Game game)
         {
             while (true)
             {
-                //Check which menu to show!
                 int selected = MakeMenuChoice(ManagerStartMenu, Title);
+                bool isDone = false;
 
                 switch (selected)
                 {
@@ -26,8 +26,7 @@ namespace WordleConsoleApp.Utilities.Menus
                         return true;
                     case 1:
                         Console.Clear();
-                        Console.WriteLine("coming soon (Switch User)");
-                        Console.ReadLine();
+                        game.SetPlayer();
                         break;
                     case 2:
                         Console.Clear();
@@ -35,7 +34,7 @@ namespace WordleConsoleApp.Utilities.Menus
                         Console.ReadLine();
                         break;
                     case 3:
-                        return false;
+                        return isDone;
                 }
             }
         }
