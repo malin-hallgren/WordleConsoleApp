@@ -12,9 +12,11 @@ namespace WordleConsoleApp
             var game = new Game();
             var word = new Word();
             var startMenu = new StartMenu(); //make this a start menu, alternatively, run start menu from Game
+            var managerMenu = new ManagerMenu();
             //game.ActiveUsers.Add(new Manager()); //does this need to happen here? cand we create this like the new player 
 
-            dynamic user = game.SetPlayer(); //scary stuff, experimenting with dynamic here
+            //game.CurrentUser = game.SetPlayer(); //scary stuff, experimenting with dynamic here
+            game.SetPlayer();
 
             //create new player object, ask if user want to play as this player or 
             //create new. Save old player. List<BasicUser>? ActiveUsers, go by isCurrent bool
@@ -22,7 +24,7 @@ namespace WordleConsoleApp
             
             while (game.isOngoing)
             {
-                if (user is Player && startMenu.StartMenuSelector(word, game))
+                if (game.CurrentUser is Player && startMenu.StartMenuSelector(word, game))
                 {
                     word.ScrambleWord(word.SelectedWord);
                     word.DisplayWord(game.CurrentPlayer);
@@ -49,7 +51,7 @@ namespace WordleConsoleApp
                 }
                 else
                 {
-
+                    managerMenu.ManagerMenuSelector(word, game);
                 }
             }
         }

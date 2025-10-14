@@ -46,7 +46,7 @@ namespace WordleConsoleApp.Utilities
         /// Checks that string input is not null or whitespace
         /// </summary>
         /// <returns></returns>
-        public static string CheckUserNameInput()
+        public static string CheckStringInput()
         {
             while (true)
             {

@@ -27,7 +27,7 @@ namespace WordleConsoleApp.User
         public void UpdateShellPlayerName(Player player)
         {
             Console.WriteLine("Please input a username:");
-            player.UserName = InputManager.CheckUserNameInput();
+            player.UserName = InputManager.CheckStringInput();
             player.IsShellUser = false;
             Console.Clear();
         }

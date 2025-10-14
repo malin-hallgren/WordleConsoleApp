@@ -32,6 +32,7 @@ namespace WordleConsoleApp.Utilities.Menus
 
             while (true)
             {
+                
                 var pressedKey = Console.ReadKey(true).Key; //Using true to avoid printing the key to console
 
                 switch (pressedKey)

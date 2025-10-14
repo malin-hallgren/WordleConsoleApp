@@ -13,7 +13,7 @@ namespace WordleConsoleApp.Utilities
     {
         public List<BasicUser> ActiveUsers { get; set; } = new List<BasicUser>();
 
-        private BasicUser CurrentUser { get; set; }
+        public BasicUser CurrentUser { get; set; }
 
         public Player CurrentPlayer { get; set; }
 
@@ -53,32 +53,48 @@ namespace WordleConsoleApp.Utilities
         public BasicUser SetPlayer()
         {
             UserSelectMenu.SetUpUserList(ActiveUsers);
+            bool validChoice = false;
 
-            CurrentUser = ActiveUsers[MenuUI.MakeMenuChoice(ActiveUsers, "Select User")];
+            do
+            {
+                CurrentUser = ActiveUsers[MenuUI.MakeMenuChoice(ActiveUsers, "Select User")];
 
+                if (CurrentUser is Player)
+                {
+                    CurrentPlayer = (Player)CurrentUser;
+
+                    if (CurrentPlayer.IsShellUser)
+                    {
+                        CurrentPlayer.UpdateShellPlayerName(CurrentPlayer);
+                        StartMenu.Title = $"Welcome to WordGuess, {CurrentUser.UserName}!";
+                    }
+
+                    validChoice = true;
+                }
+                else
+                {
+                    CurrentManager = (Manager)CurrentUser;
+
+                    if (CurrentManager.CheckPassword(CurrentManager))
+                    {
+                        ManagerMenu.Title = $"Welcome to WordGuess, {CurrentManager.UserName}! What would you like to manage?";
+                        validChoice = true;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Login failed.");
+                        Console.WriteLine("Press ENTER to return to User Selection Menu");
+                    }
+                }
+            } while (!validChoice);
+            
             foreach (BasicUser user in ActiveUsers)
             {
                 user.IsCurrentUser = false;
             }
             CurrentUser.IsCurrentUser = true;
-            
 
-            //This needs to stay, but potentially add one for manager too so we get the correct types 
-            if (CurrentUser is Player)
-            {
-                CurrentPlayer = (Player)CurrentUser;
-
-                if (CurrentPlayer.IsShellUser)
-                {
-                    CurrentPlayer.UpdateShellPlayerName(CurrentPlayer);
-                    StartMenu.Title = $"Welcome to WordGuess, {CurrentUser.UserName}!";
-                }
-            }
-            else
-            {
-                CurrentManager = (Manager)CurrentUser;
-                StartMenu.Title = $"Welcome to WordGuess, {CurrentUser.UserName}! What would you like to manage?";
-            }
             return CurrentUser;
             
         }
