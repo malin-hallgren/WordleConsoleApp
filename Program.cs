@@ -24,8 +24,9 @@ namespace WordleConsoleApp
             
             while (game.isOngoing)
             {
-                if (game.CurrentUser is Player && startMenu.StartMenuSelector(word, game))
+                if (game.CurrentUser is Player)
                 {
+                    startMenu.StartMenuSelector(word, game);
                     word.ScrambleWord(word.SelectedWord);
                     word.DisplayWord(game.CurrentPlayer);
 

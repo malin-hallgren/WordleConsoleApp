@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WordleConsoleApp.HighScore;
 using WordleConsoleApp.User;
 using WordleConsoleApp.Words;
 
@@ -38,10 +39,10 @@ namespace WordleConsoleApp.Utilities.Menus
                     case 1:
                         Console.Clear();
                         game.SetPlayer();
-                        return isDone;
+                        break;
                     case 2:
                         Console.Clear();
-                        Console.WriteLine("coming soon");
+                        HighScoreBoard.PrintScoreBoard();
                         Console.ReadLine();
                         break;
                     case 3:

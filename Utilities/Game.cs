@@ -59,15 +59,17 @@ namespace WordleConsoleApp.Utilities
             {
                 CurrentUser = ActiveUsers[MenuUI.MakeMenuChoice(ActiveUsers, "Select User")];
 
-                if (CurrentUser is Player)
+                if (CurrentUser is Player) //check what happens when a new user is created and why it becomes a manager
                 {
                     CurrentPlayer = (Player)CurrentUser;
 
                     if (CurrentPlayer.IsShellUser)
                     {
                         CurrentPlayer.UpdateShellPlayerName(CurrentPlayer);
-                        StartMenu.Title = $"Welcome to WordGuess, {CurrentUser.UserName}!";
+                        
                     }
+
+                    StartMenu.Title = $"Welcome to WordGuess, {CurrentUser.UserName}!";
 
                     validChoice = true;
                 }

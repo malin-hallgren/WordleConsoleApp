@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using WordleConsoleApp.Utilities;
+using WordleConsoleApp.HighScore;
 
 namespace WordleConsoleApp.User
 {
@@ -41,6 +42,7 @@ namespace WordleConsoleApp.User
             {
                 HighScore = CurrentScore;
                 FormatManager.HighlightOutput($"New High Score: {HighScore}!", ConsoleColor.Yellow);
+                HighScoreBoard.UpdateScoreBoard(UserName, HighScore);
             }
 
             ResetScore();
