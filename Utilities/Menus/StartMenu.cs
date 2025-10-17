@@ -47,7 +47,7 @@ namespace WordleConsoleApp.Utilities.Menus
                         break;
                     case 3:
                         game.isOngoing = false;
-                        return isDone;
+                        break;
                 }
             }
         }

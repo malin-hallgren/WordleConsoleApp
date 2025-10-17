@@ -8,6 +8,8 @@ namespace WordleConsoleApp.User
 {
     internal abstract class BasicUser : IComparable<BasicUser>
     {
+        private readonly string _filepath = "UserList.json";
+
         public string UserName { get; set; }
         public bool IsCurrentUser { get; set; }
         
@@ -38,6 +40,16 @@ namespace WordleConsoleApp.User
 
 
             return comparison.IsAdmin.CompareTo(this.IsAdmin);
+
+        }
+
+        public static void LoadUserList(List<BasicUser> users)
+        {
+
+        }
+
+        public static void SaveUserList(List<BasicUser> users)
+        {
 
         }
     }

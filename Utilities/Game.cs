@@ -11,7 +11,7 @@ namespace WordleConsoleApp.Utilities
 {
     internal class Game
     {
-        public List<BasicUser> ActiveUsers { get; set; } = new List<BasicUser>();
+        public List<BasicUser> ActiveUsers { get; set; } = new List<BasicUser>(); //this needs to be serialised to be persistent
 
         public BasicUser CurrentUser { get; set; }
 

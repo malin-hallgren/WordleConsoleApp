@@ -10,6 +10,7 @@ namespace WordleConsoleApp.Utilities.Menus
 {
     internal class UserSelectMenu
     {
+        
         /// <summary>
         /// Checks if there is currently a new player option in the list of active users, and adds one if there isn't
         /// </summary>
@@ -43,5 +44,7 @@ namespace WordleConsoleApp.Utilities.Menus
             NewManagerOption(users);
             users.Sort();
         }
+
+        
     }
 }

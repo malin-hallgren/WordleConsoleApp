@@ -10,7 +10,52 @@ namespace WordleConsoleApp.HighScore
 {
     internal class HighScoreBoard
     {
+        private readonly static string filePath = "highscores.json";
         public static Dictionary<string, int> HighScores { get; private set; } = new Dictionary<string, int>();
+
+        static HighScoreBoard()
+        {
+            HighScores = FileManager.LoadDictFromPath<string, int>(filePath);
+        }
+
+        [ObsoleteAttribute("This is replaced by generic SaveToPath")]
+        private static void SaveHighScores()
+        {
+            try
+            {
+                string json = System.Text.Json.JsonSerializer.Serialize(HighScores);
+                File.WriteAllText(filePath, json);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving high scores: {ex.Message}");
+            }
+        }
+
+        [ObsoleteAttribute("This is replaced by generic LoadFromPath")]
+        private static void LoadHighScores()
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    string json = File.ReadAllText(filePath);
+                    HighScores = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, int>>(json) ?? new Dictionary<string, int>();
+                }
+                else
+                {
+                    Console.WriteLine("No High Scores found, New High Score board created!");
+                    HighScores = new Dictionary<string, int>();
+                    SaveHighScores();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading high scores: {ex.Message}\nCreating a new file, Rip your old High Scores, they are gone :(");
+                HighScores = new Dictionary<string, int>();
+                SaveHighScores();
+            }
+        }
         public static void PrintScoreBoard()
         {
             int rank = 1;
@@ -37,7 +82,7 @@ namespace WordleConsoleApp.HighScore
                     FormatManager.HighlightOutput(entry, ConsoleColor.DarkYellow);
                     break;
                 default:
-                    Console.WriteLine(entry);
+                    Console.Write(entry);
                     break;
             }
         }
@@ -46,12 +91,12 @@ namespace WordleConsoleApp.HighScore
         {
             if(!HighScores.TryAdd(name, score))
             {
-                RemoveOldEntry(name);
+                HighScores.Remove(name);
                 HighScores.Add(name, score);
             }
-
-            
             SortByScore();
+            FileManager.SaveDictToPath(filePath, HighScores);
+            //SaveHighScores();
         }
 
         private static void SortByScore()
@@ -59,9 +104,5 @@ namespace WordleConsoleApp.HighScore
             HighScores = HighScores.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
         }
 
-        private static void RemoveOldEntry(string name)
-        {
-            HighScores.Remove(name);
-        }
     }
 }
