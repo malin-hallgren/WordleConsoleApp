@@ -2,6 +2,7 @@
 using WordleConsoleApp.Utilities;
 using WordleConsoleApp.Utilities.Menus;
 using WordleConsoleApp.Words;
+using WordleConsoleApp.HighScore;
 
 namespace WordleConsoleApp
 {
@@ -13,9 +14,8 @@ namespace WordleConsoleApp
             var word = new Word();
             var startMenu = new StartMenu(); //make this a start menu, alternatively, run start menu from Game
             var managerMenu = new ManagerMenu();
-            //game.ActiveUsers.Add(new Manager()); //does this need to happen here? cand we create this like the new player 
+            var highScoreBoard = new HighScoreBoard(); //not needed?
 
-            //game.CurrentUser = game.SetPlayer(); //scary stuff, experimenting with dynamic here
             game.SetPlayer();
 
             //create new player object, ask if user want to play as this player or 
@@ -26,7 +26,11 @@ namespace WordleConsoleApp
             {
                 if (game.CurrentUser is Player)
                 {
-                    startMenu.StartMenuSelector(word, game);
+                    if(!startMenu.StartMenuSelector(word, game))
+                    {
+                        break;
+                    }
+
                     word.ScrambleWord(word.SelectedWord);
                     word.DisplayWord(game.CurrentPlayer);
 
@@ -52,7 +56,10 @@ namespace WordleConsoleApp
                 }
                 else
                 {
-                    managerMenu.ManagerMenuSelector(word, game);
+                    if(!managerMenu.ManagerMenuSelector(word, game))
+                    {
+                        break;
+                    }
                 }
             }
         }

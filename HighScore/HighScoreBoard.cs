@@ -10,7 +10,13 @@ namespace WordleConsoleApp.HighScore
 {
     internal class HighScoreBoard
     {
+        private readonly static string filePath = "highscores.json";
         public static Dictionary<string, int> HighScores { get; private set; } = new Dictionary<string, int>();
+
+        static HighScoreBoard()
+        {
+            HighScores = JsonHelper.LoadDictFromPath<string, int>(filePath);
+        }
         public static void PrintScoreBoard()
         {
             int rank = 1;
@@ -37,7 +43,7 @@ namespace WordleConsoleApp.HighScore
                     FormatManager.HighlightOutput(entry, ConsoleColor.DarkYellow);
                     break;
                 default:
-                    Console.WriteLine(entry);
+                    Console.Write(entry);
                     break;
             }
         }
@@ -46,12 +52,12 @@ namespace WordleConsoleApp.HighScore
         {
             if(!HighScores.TryAdd(name, score))
             {
-                RemoveOldEntry(name);
+                HighScores.Remove(name);
                 HighScores.Add(name, score);
             }
-
-            
             SortByScore();
+            JsonHelper.SaveDictToPath(filePath, HighScores);
+            //SaveHighScores();
         }
 
         private static void SortByScore()
@@ -59,9 +65,5 @@ namespace WordleConsoleApp.HighScore
             HighScores = HighScores.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
         }
 
-        private static void RemoveOldEntry(string name)
-        {
-            HighScores.Remove(name);
-        }
     }
 }

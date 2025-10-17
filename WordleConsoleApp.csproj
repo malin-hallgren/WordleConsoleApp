@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="9.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Words\WordLibrary.txt">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>

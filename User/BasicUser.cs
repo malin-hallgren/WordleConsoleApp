@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WordleConsoleApp.User
 {
+
+
     internal abstract class BasicUser : IComparable<BasicUser>
     {
         public string UserName { get; set; }
@@ -38,6 +41,16 @@ namespace WordleConsoleApp.User
 
 
             return comparison.IsAdmin.CompareTo(this.IsAdmin);
+
+        }
+
+        public static void LoadUserList(List<BasicUser> users)
+        {
+
+        }
+
+        public static void SaveUserList(List<BasicUser> users)
+        {
 
         }
     }

@@ -15,9 +15,9 @@ namespace WordleConsoleApp.User
 
         public int HighScore { get; private set; }
 
-        public Player(string name = "New Player", int currentScore = 0)
+        public Player(string userName = "New Player", int currentScore = 0)
         {
-            UserName = name;
+            UserName = userName;
             CurrentScore = currentScore;
         }
         
