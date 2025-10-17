@@ -15,46 +15,7 @@ namespace WordleConsoleApp.HighScore
 
         static HighScoreBoard()
         {
-            HighScores = FileManager.LoadDictFromPath<string, int>(filePath);
-        }
-
-        [ObsoleteAttribute("This is replaced by generic SaveToPath")]
-        private static void SaveHighScores()
-        {
-            try
-            {
-                string json = System.Text.Json.JsonSerializer.Serialize(HighScores);
-                File.WriteAllText(filePath, json);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error saving high scores: {ex.Message}");
-            }
-        }
-
-        [ObsoleteAttribute("This is replaced by generic LoadFromPath")]
-        private static void LoadHighScores()
-        {
-            try
-            {
-                if (File.Exists(filePath))
-                {
-                    string json = File.ReadAllText(filePath);
-                    HighScores = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, int>>(json) ?? new Dictionary<string, int>();
-                }
-                else
-                {
-                    Console.WriteLine("No High Scores found, New High Score board created!");
-                    HighScores = new Dictionary<string, int>();
-                    SaveHighScores();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error loading high scores: {ex.Message}\nCreating a new file, Rip your old High Scores, they are gone :(");
-                HighScores = new Dictionary<string, int>();
-                SaveHighScores();
-            }
+            HighScores = JsonHelper.LoadDictFromPath<string, int>(filePath);
         }
         public static void PrintScoreBoard()
         {
@@ -95,7 +56,7 @@ namespace WordleConsoleApp.HighScore
                 HighScores.Add(name, score);
             }
             SortByScore();
-            FileManager.SaveDictToPath(filePath, HighScores);
+            JsonHelper.SaveDictToPath(filePath, HighScores);
             //SaveHighScores();
         }
 

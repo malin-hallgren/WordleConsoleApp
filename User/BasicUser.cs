@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WordleConsoleApp.User
 {
+
+
     internal abstract class BasicUser : IComparable<BasicUser>
     {
-        private readonly string _filepath = "UserList.json";
-
         public string UserName { get; set; }
         public bool IsCurrentUser { get; set; }
         

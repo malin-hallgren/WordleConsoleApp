@@ -14,9 +14,8 @@ namespace WordleConsoleApp
             var word = new Word();
             var startMenu = new StartMenu(); //make this a start menu, alternatively, run start menu from Game
             var managerMenu = new ManagerMenu();
-            var highScoreBoard = new HighScoreBoard();
+            var highScoreBoard = new HighScoreBoard(); //not needed?
 
-            //game.CurrentUser = game.SetPlayer(); //scary stuff, experimenting with dynamic here
             game.SetPlayer();
 
             //create new player object, ask if user want to play as this player or 
@@ -27,7 +26,11 @@ namespace WordleConsoleApp
             {
                 if (game.CurrentUser is Player)
                 {
-                    startMenu.StartMenuSelector(word, game);
+                    if(!startMenu.StartMenuSelector(word, game))
+                    {
+                        break;
+                    }
+
                     word.ScrambleWord(word.SelectedWord);
                     word.DisplayWord(game.CurrentPlayer);
 
@@ -53,7 +56,10 @@ namespace WordleConsoleApp
                 }
                 else
                 {
-                    managerMenu.ManagerMenuSelector(word, game);
+                    if(!managerMenu.ManagerMenuSelector(word, game))
+                    {
+                        break;
+                    }
                 }
             }
         }

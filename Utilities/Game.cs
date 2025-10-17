@@ -11,6 +11,7 @@ namespace WordleConsoleApp.Utilities
 {
     internal class Game
     {
+        public string _activeUsersPath = "activeusers.josn";
         public List<BasicUser> ActiveUsers { get; set; } = new List<BasicUser>(); //this needs to be serialised to be persistent
 
         public BasicUser CurrentUser { get; set; }
@@ -34,6 +35,8 @@ namespace WordleConsoleApp.Utilities
 
         public int StaticRows { get; private set; } = 4;
 
+        
+
         /// <summary>
         /// Resets the game to a game start state
         /// </summary>
@@ -52,7 +55,11 @@ namespace WordleConsoleApp.Utilities
         /// <param name="userSelectMenu">the menu that will need to be displayed</param>
         public BasicUser SetPlayer()
         {
+            ActiveUsers = JsonHelper.LoadListFromPath<BasicUser>(_activeUsersPath);
+
             UserSelectMenu.SetUpUserList(ActiveUsers);
+            
+
             bool validChoice = false;
 
             do
@@ -90,7 +97,9 @@ namespace WordleConsoleApp.Utilities
                     }
                 }
             } while (!validChoice);
-            
+
+            JsonHelper.SaveListToPath(_activeUsersPath, ActiveUsers);
+
             foreach (BasicUser user in ActiveUsers)
             {
                 user.IsCurrentUser = false;

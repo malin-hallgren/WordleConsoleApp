@@ -22,7 +22,6 @@ namespace WordleConsoleApp.Utilities.Menus
         /// <returns>A bool to start the game, or quit it</returns>
         public bool StartMenuSelector(Word word, Game game)
         {
-            bool isDone = false;
             while (true)
             {
                 int selected = MakeMenuChoice(PlayerStartMenu, Title);
@@ -34,8 +33,7 @@ namespace WordleConsoleApp.Utilities.Menus
                         Console.Clear();
                         word.PickWord();
                         game.SetGame(game);
-                        isDone = true;
-                        return isDone;
+                        return true;
                     case 1:
                         Console.Clear();
                         game.SetPlayer();
@@ -46,8 +44,8 @@ namespace WordleConsoleApp.Utilities.Menus
                         Console.ReadLine();
                         break;
                     case 3:
-                        game.isOngoing = false;
-                        break;
+                        JsonHelper.SaveListToPath(game._activeUsersPath, game.ActiveUsers);
+                        return false;
                 }
             }
         }
