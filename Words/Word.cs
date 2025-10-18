@@ -5,31 +5,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WordleConsoleApp.User;
+using WordleConsoleApp.Utilities;
 
 namespace WordleConsoleApp.Words
 {
     internal class Word
     {
-        private string[] PrecursorPossibleWords;
-        private List <string> PossibleWords { get; set; } 
+        private string _filePath = "WordLibrary.json";
+        private List<string> PossibleWords { get; set; } = new List<string>
+        {
+            "duck", 
+            "desk", 
+            "chair", 
+            "phone", 
+            "bottle", 
+            "screen", 
+            "editor", 
+            "laptop", 
+            "monitor", 
+            "program", 
+            "software", 
+            "computer",
+            "terminal",
+            "developer"
+        };
         public string SelectedWord { get; private set; }
         public string ScrambledWord { get; private set; }
         
 
         public Word()
         {
-            PrecursorPossibleWords = File.ReadAllLines(ReadFileDirectory());
-            PossibleWords = PrecursorPossibleWords.ToList();
-        }
-
-        /// <summary>
-        /// Grabs the correct, relative, path to the file WordLibrary
-        /// </summary>
-        /// <returns>a path to the correct directory</returns>
-        private string ReadFileDirectory()
-        {
-            string baseDirectory = AppContext.BaseDirectory;
-            return Path.Combine(baseDirectory, @"..\..\..\\Words\WordLibrary.txt");
+            PossibleWords.AddRange(JsonHelper.LoadListFromPath<string>(_filePath).Where(word => !PossibleWords.Contains(word)));
         }
 
         /// <summary>

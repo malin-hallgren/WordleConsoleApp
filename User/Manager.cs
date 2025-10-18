@@ -17,6 +17,12 @@ namespace WordleConsoleApp.User
             IsAdmin = true;
         }
 
+
+        /// <summary>
+        /// Checks whether password entered by User is matching stored password
+        /// </summary>
+        /// <param name="manager">The manager object selected by the user</param>
+        /// <returns>A bool, true for matching, false for not matching</returns>
         public bool CheckPassword(Manager manager)
         {
             Console.WriteLine("Please input your password:");
