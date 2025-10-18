@@ -12,7 +12,7 @@ namespace WordleConsoleApp.Words
     internal class Word
     {
         private string _filePath = "WordLibrary.json";
-        private List<string> PossibleWords { get; set; } = new List<string>
+        public List<string> PossibleWords { get; set; } = new List<string>
         {
             "duck", 
             "desk", 
@@ -91,5 +91,7 @@ namespace WordleConsoleApp.Words
         {
             Console.WriteLine($"Guess the word {player.UserName}!\n\n\t{ScrambledWord}\n");
         }
+
+        
     }
 }

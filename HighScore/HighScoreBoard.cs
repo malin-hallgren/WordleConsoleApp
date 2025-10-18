@@ -13,6 +13,7 @@ namespace WordleConsoleApp.HighScore
         private readonly static string filePath = "highscores.json";
         public static Dictionary<string, int> HighScores { get; private set; } = new Dictionary<string, int>();
 
+
         static HighScoreBoard()
         {
             HighScores = JsonHelper.LoadDictFromPath<string, int>(filePath);
@@ -48,21 +49,39 @@ namespace WordleConsoleApp.HighScore
             }
         }
 
-        public static void UpdateScoreBoard(string name, int score)
+        public static void UpdateScoreBoard(Player player)
         {
-            if(!HighScores.TryAdd(name, score))
+            if(!HighScores.TryAdd(player.UserName, player.HighScore))
             {
-                HighScores.Remove(name);
-                HighScores.Add(name, score);
+                HighScores.Remove(player.UserName);
+                HighScores.Add(player.UserName, player.HighScore);
             }
             SortByScore();
             JsonHelper.SaveDictToPath(filePath, HighScores);
-            //SaveHighScores();
         }
 
         private static void SortByScore()
         {
             HighScores = HighScores.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+        }
+
+        public static void ClearSingleScore(Player player)
+        {
+            HighScores.Remove(player.UserName);
+        }
+        public static void ClearScoreBoard(Game game)
+        {
+            HighScores.Clear();
+            JsonHelper.SaveDictToPath(filePath, HighScores);
+
+            foreach (var user in game.ActiveUsers)
+            {
+                if(user is Player)
+                {
+                    var player = (Player)user;
+                    player.HighScore = 0;
+                }
+            }
         }
 
     }

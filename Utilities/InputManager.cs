@@ -58,7 +58,7 @@ namespace WordleConsoleApp.Utilities
                 }
                 else
                 {
-                    Console.WriteLine("User name cannot be blank, please make an input:");
+                    Console.WriteLine("Input cannot be blank, please make an input:");
                 }
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WordleConsoleApp.HighScore;
 using WordleConsoleApp.User;
 using WordleConsoleApp.Utilities.Menus;
 using WordleConsoleApp.Words;
@@ -52,8 +53,7 @@ namespace WordleConsoleApp.Utilities
         /// <summary>
         /// Sets up which User to play as and casts to corect type for using subclass specific methods
         /// </summary>
-        /// <param name="userSelectMenu">the menu that will need to be displayed</param>
-        public BasicUser SetPlayer()
+        public BasicUser SetUser()
         {
             ActiveUsers = JsonHelper.LoadListFromPath<BasicUser>(_activeUsersPath);
 
@@ -107,9 +107,10 @@ namespace WordleConsoleApp.Utilities
             CurrentUser.IsCurrentUser = true;
 
             return CurrentUser;
-            
         }
         
+
+
         /// <summary>
         /// Allows player to make a guess
         /// </summary>

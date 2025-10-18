@@ -36,15 +36,16 @@ namespace WordleConsoleApp.Utilities.Menus
                         return true;
                     case 1:
                         Console.Clear();
-                        game.SetPlayer();
-                        break;
+                        game.SetUser();
+                        return false;
                     case 2:
                         Console.Clear();
                         HighScoreBoard.PrintScoreBoard();
                         Console.ReadLine();
-                        break;
+                        return false;
                     case 3:
                         JsonHelper.SaveListToPath(game._activeUsersPath, game.ActiveUsers);
+                        game.isOngoing = false;
                         return false;
                 }
             }

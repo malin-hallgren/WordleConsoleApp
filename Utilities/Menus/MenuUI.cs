@@ -11,7 +11,8 @@ namespace WordleConsoleApp.Utilities.Menus
     internal abstract class MenuUI
     {
         public List<string> PlayerStartMenu = new List<string> { "Start Game", "Switch User", "High Scores", "Quit" };
-        public List<string> ManagerStartMenu = new List<string> { "Settings", "Switch User", "High Scores", "Quit" };
+        public static List<string> ManagerStartMenu = new List<string> { "Settings", "Switch User", "High Scores", "Quit" };
+        
 
 
         /// <summary>

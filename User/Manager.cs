@@ -45,5 +45,12 @@ namespace WordleConsoleApp.User
 
 
         }
+
+        public static void RemoveUser()
+        {
+
+        }
+
+        
     }
 }

@@ -13,7 +13,7 @@ namespace WordleConsoleApp.User
     {
         public int CurrentScore { get; set; }
 
-        public int HighScore { get; private set; }
+        public int HighScore { get; set; }
 
         public Player(string userName = "New Player", int currentScore = 0)
         {
@@ -42,7 +42,7 @@ namespace WordleConsoleApp.User
             {
                 HighScore = CurrentScore;
                 FormatManager.HighlightOutput($"New High Score: {HighScore}!", ConsoleColor.Yellow);
-                HighScoreBoard.UpdateScoreBoard(UserName, HighScore);
+                HighScoreBoard.UpdateScoreBoard(this);
             }
 
             ResetScore();

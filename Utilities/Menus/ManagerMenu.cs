@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WordleConsoleApp.HighScore;
 using WordleConsoleApp.Words;
 
 namespace WordleConsoleApp.Utilities.Menus
@@ -10,31 +11,37 @@ namespace WordleConsoleApp.Utilities.Menus
     internal class ManagerMenu : MenuUI
     {
         public static string Title { get; set; } = "Welcome to WordGuess, what would you like to manage, ";
-        public bool ManagerMenuSelector(Word word, Game game)
+
+        protected static Game _currentGame;
+        protected static Word _currentWord;
+        public static bool ManagerMenuSelector(Word word, Game game)
         {
+            _currentWord = word;
+            _currentGame = game;
             while (true)
             {
                 int selected = MakeMenuChoice(ManagerStartMenu, Title);
-                bool isDone = false;
 
                 switch (selected)
                 {
                     //Add if cases on option 1 to check if current user is player or manager
                     case 0:
                         Console.Clear();
-                        Console.WriteLine("coming soon (settings)");
+                        string selectedKey = ManagerSettingsMenu.ManagerSettingsStrings[MakeMenuChoice(ManagerSettingsMenu.ManagerSettingsStrings, "What do you wish to change?")];
+                        ManagerSettingsMenu.ManagerSettingsOptions[selectedKey]();
                         return true;
                     case 1:
                         Console.Clear();
-                        game.SetPlayer();
-                        break;
+                        game.SetUser();
+                        return false;
                     case 2:
                         Console.Clear();
-                        Console.WriteLine("coming soon (High Scores)");
+                        HighScoreBoard.PrintScoreBoard();
                         Console.ReadLine();
-                        break;
+                        return false;
                     case 3:
-                        return isDone;
+                        game.isOngoing = false;
+                        return false;
                 }
             }
         }
