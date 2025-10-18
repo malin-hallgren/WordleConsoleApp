@@ -17,6 +17,11 @@ namespace WordleConsoleApp.User
         public bool IsAdmin {  get; set; }
 
         public bool IsShellUser { get; set; }
+
+        /// <summary>
+        /// Standard ToString for printing an object
+        /// </summary>
+        /// <returns>string containing UserName of the BasicUser object</returns>
         public override string ToString()
         {
             return $"{UserName}";
@@ -34,6 +39,11 @@ namespace WordleConsoleApp.User
             }
         }
 
+        /// <summary>
+        /// Comparer for sorting a list of users, ensuring Managers always are on top
+        /// </summary>
+        /// <param name="user">the BasicUser object to compare</param>
+        /// <returns>returns int for sorting </returns>
         public int CompareTo(BasicUser? user)
         {
             
@@ -41,16 +51,6 @@ namespace WordleConsoleApp.User
 
 
             return comparison.IsAdmin.CompareTo(this.IsAdmin);
-
-        }
-
-        public static void LoadUserList(List<BasicUser> users)
-        {
-
-        }
-
-        public static void SaveUserList(List<BasicUser> users)
-        {
 
         }
     }

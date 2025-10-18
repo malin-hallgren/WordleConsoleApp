@@ -38,6 +38,11 @@ namespace WordleConsoleApp.Utilities.Menus
             }
         }
 
+
+        /// <summary>
+        /// Initializes the list of BasicUser for the UserSelectMenu and sorts it
+        /// </summary>
+        /// <param name="users">the list to setup and sort</param>
         public static void SetUpUserList(List<BasicUser> users)
         {
             NewPlayerOption(users);
