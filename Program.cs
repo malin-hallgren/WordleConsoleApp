@@ -42,7 +42,7 @@ namespace WordleConsoleApp
                     if (game.isCorrect)
                     {
                         Console.WriteLine("\nGood job! You guessed the word!\n");
-                        game.CurrentPlayer.CheckNewHighScore();
+                        game.CurrentPlayer.CheckNewHighScore(game);
                     }
                     else
                     {

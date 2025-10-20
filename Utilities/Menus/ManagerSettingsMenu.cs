@@ -28,7 +28,8 @@ namespace WordleConsoleApp.Utilities.Menus
         }
         public static void RemoveUserMenu()
         {
-            //Remove New Player Option
+            _currentGame.ActiveUsers.RemoveAll(x => x.UserName == "New Player");
+
             _currentGame.ActiveUsers.Add(new Player("Wipe All"));
             _currentGame.ActiveUsers.Add(new Player("Back"));
             int toRemove = MenuUI.MakeMenuChoice(_currentGame.ActiveUsers, "Which user to remove?");
@@ -42,9 +43,10 @@ namespace WordleConsoleApp.Utilities.Menus
                 Manager savedManager = _currentGame.CurrentManager;
 
                 _currentGame.ActiveUsers.Clear();
+                HighScoreBoard.ClearScoreBoard(_currentGame);
                 _currentGame.ActiveUsers.Add(savedManager);
 
-                Console.WriteLine("All Users wiped!");
+                Console.WriteLine("All Users and High Scores wiped!");
             }
             else if (_currentGame.ActiveUsers[toRemove].UserName != "Back")
             {
@@ -54,9 +56,8 @@ namespace WordleConsoleApp.Utilities.Menus
                 Console.ReadLine();
             }
 
-            
+            _currentGame.ActiveUsers.RemoveAll(x => x.UserName == "Back" || x.UserName == "Wipe All");
             JsonHelper.SaveListToPath(_currentGame._activeUsersPath, _currentGame.ActiveUsers);
-            //Remove wipe and back
         }
 
         public static void WipeUsers()
