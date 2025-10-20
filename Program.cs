@@ -12,26 +12,41 @@ namespace WordleConsoleApp
         {
             var game = new Game();
             var word = new Word();
-            var startMenu = new StartMenu(); //make this a start menu, alternatively, run start menu from Game
-            var highScoreBoard = new HighScoreBoard(); //not needed?
+            var menu = new MenuController(game, word);
 
             game.SetUser();
 
-            //create new player object, ask if user want to play as this player or 
-            //create new. Save old player. List<BasicUser>? ActiveUsers, go by isCurrent bool
-
-            
             while (game.isOngoing)
             {
                 if (game.CurrentUser is Player)
                 {
-                    if(!startMenu.StartMenuSelector(word, game))
+                    bool hasStarted = false;
+                    do
+                    {
+                        int selectedAction = MenuController.Choice(PlayerMenu.Options.Keys.ToList(), PlayerMenu.Title);
+                        PlayerMenu.Options[PlayerMenu.Options.Keys.ToList()[selectedAction]]();
+
+                        
+
+                        if (selectedAction == 0)
+                        {
+                            hasStarted = true;
+                        }
+
+                        if (game.CurrentUser is Manager)
+                        {
+                            break;
+                        }
+
+                    } while (!hasStarted);
+
+                    if (game.CurrentUser is Manager)
                     {
                         continue;
                     }
 
-                    word.ScrambleWord(word.SelectedWord);
-                    word.DisplayWord(game.CurrentPlayer);
+                    word.Scramble(word.SelectedWord);
+                    word.Display(game.CurrentPlayer);
 
                     while (game.Attempt < game.MaxAttempts && !game.isCorrect)
                     {
@@ -42,7 +57,7 @@ namespace WordleConsoleApp
                     if (game.isCorrect)
                     {
                         Console.WriteLine("\nGood job! You guessed the word!\n");
-                        game.CurrentPlayer.CheckNewHighScore(game);
+                        game.CurrentPlayer.CheckScore(game);
                     }
                     else
                     {
@@ -55,9 +70,12 @@ namespace WordleConsoleApp
                 }
                 else
                 {
-                    if(!ManagerMenu.ManagerMenuSelector(word, game))
+                    int selectedAction = MenuController.Choice(ManagerMenu.Options.Keys.ToList(), ManagerMenu.Title);
+                    ManagerMenu.Options[ManagerMenu.Options.Keys.ToList()[selectedAction]]();
+
+                    if (game.CurrentUser is Player)
                     {
-                        continue;
+                       continue;
                     }
                 }
             }

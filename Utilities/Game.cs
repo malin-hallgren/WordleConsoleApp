@@ -42,12 +42,13 @@ namespace WordleConsoleApp.Utilities
         /// Resets the game to a game start state
         /// </summary>
         /// <param name="game">the game object which to reset</param>
-        public void SetGame(Game game)
+        public void SetGame(Game game, Word word)
         {
             Attempt = 0;
             MaxAttempts = 5;
             isCorrect = false;
             AmountCorrectLetters = 0;
+            word.Pick();
         }
 
         /// <summary>
@@ -55,16 +56,16 @@ namespace WordleConsoleApp.Utilities
         /// </summary>
         public BasicUser SetUser()
         {
-            ActiveUsers = JsonHelper.LoadListFromPath<BasicUser>(_activeUsersPath);
+            ActiveUsers = JsonHelper.LoadList<BasicUser>(_activeUsersPath);
 
-            UserSelectMenu.SetUpUserList(ActiveUsers);
+            UserSelect.SetUpUserList(ActiveUsers);
             
 
             bool validChoice = false;
 
             do
             {
-                CurrentUser = ActiveUsers[MenuUI.MakeMenuChoice(ActiveUsers, "Select User")];
+                CurrentUser = ActiveUsers[MenuController.Choice(ActiveUsers, "Select User")];
 
                 if (CurrentUser is Player) //check what happens when a new user is created and why it becomes a manager
                 {
@@ -72,11 +73,11 @@ namespace WordleConsoleApp.Utilities
 
                     if (CurrentPlayer.IsShellUser)
                     {
-                        CurrentPlayer.UpdateShellPlayerName(CurrentPlayer);
+                        CurrentPlayer.UpdateShellName(CurrentPlayer);
                         
                     }
 
-                    StartMenu.Title = $"Welcome to WordGuess, {CurrentUser.UserName}!";
+                    PlayerMenu.Title = $"Welcome to WordGuess, {CurrentUser.UserName}!";
 
                     validChoice = true;
                 }
@@ -98,7 +99,7 @@ namespace WordleConsoleApp.Utilities
                 }
             } while (!validChoice);
 
-            JsonHelper.SaveListToPath(_activeUsersPath, ActiveUsers);
+            JsonHelper.SaveList(_activeUsersPath, ActiveUsers);
 
             foreach (BasicUser user in ActiveUsers)
             {
@@ -141,7 +142,7 @@ namespace WordleConsoleApp.Utilities
                 if (guess[i] == target[i])
                 {
                     FormatManager.TabToPos(Attempt, Tab + i);
-                    FormatManager.HighlightOutput(guess[i], ConsoleColor.Green);
+                    FormatManager.Highlight(guess[i], ConsoleColor.Green);
                     currentCorrectLetters++;
                     
                 }
@@ -228,7 +229,7 @@ namespace WordleConsoleApp.Utilities
             if (isCorrect)
             {
                 FormatManager.TabToPos(Attempt + 1, (2 * Tab) + (Tab / 2) + 2, StaticRows);
-                FormatManager.HighlightOutput(player.CurrentScore, ConsoleColor.DarkYellow);
+                FormatManager.Highlight(player.CurrentScore, ConsoleColor.DarkYellow);
             }
         }
     }

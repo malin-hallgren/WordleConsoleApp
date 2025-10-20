@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WordleConsoleApp.User;
 using WordleConsoleApp.Utilities;
+using WordleConsoleApp.Utilities.Menus;
 
 namespace WordleConsoleApp.HighScore
 {
@@ -16,7 +17,7 @@ namespace WordleConsoleApp.HighScore
 
         static HighScoreBoard()
         {
-            HighScores = JsonHelper.LoadDictFromPath<string, int>(filePath);
+            HighScores = JsonHelper.LoadDict<string, int>(filePath);
         }
         public static void PrintScoreBoard()
         {
@@ -28,6 +29,11 @@ namespace WordleConsoleApp.HighScore
                 HighScoreColor(rankString, rank);
                 rank++;
             }
+
+            Console.CursorVisible = false;
+            Console.WriteLine("\nPress ENTER to return to menu...");
+            Console.ReadLine();
+            Console.CursorVisible = true;
         }
 
         public static void HighScoreColor(string entry, int rank)
@@ -35,13 +41,13 @@ namespace WordleConsoleApp.HighScore
             switch (rank)
             {
                 case 1:
-                    FormatManager.HighlightOutput(entry, ConsoleColor.Yellow);
+                    FormatManager.Highlight(entry, ConsoleColor.Yellow);
                     break;
                 case 2:
-                    FormatManager.HighlightOutput(entry, ConsoleColor.DarkGray);
+                    FormatManager.Highlight(entry, ConsoleColor.DarkGray);
                     break;
                 case 3:
-                    FormatManager.HighlightOutput(entry, ConsoleColor.DarkYellow);
+                    FormatManager.Highlight(entry, ConsoleColor.DarkYellow);
                     break;
                 default:
                     Console.Write(entry);
@@ -56,11 +62,11 @@ namespace WordleConsoleApp.HighScore
                 HighScores.Remove(player.UserName);
                 HighScores.Add(player.UserName, player.HighScore);
             }
-            SortByScore();
-            JsonHelper.SaveDictToPath(filePath, HighScores);
+            ScoreSort();
+            JsonHelper.SaveDict(filePath, HighScores);
         }
 
-        private static void SortByScore()
+        private static void ScoreSort()
         {
             HighScores = HighScores.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
         }
@@ -71,17 +77,32 @@ namespace WordleConsoleApp.HighScore
         }
         public static void ClearScoreBoard(Game game)
         {
-            HighScores.Clear();
-            JsonHelper.SaveDictToPath(filePath, HighScores);
-
-            foreach (var user in game.ActiveUsers)
+            int choice = MenuController.Choice(MenuController.ConfirmationMenu[1..], MenuController.ConfirmationMenu[0]);
+            if ( choice +1 == 1)
             {
-                if(user is Player)
+                HighScores.Clear();
+                JsonHelper.SaveDict(filePath, HighScores);
+
+                foreach (var user in game.ActiveUsers)
                 {
-                    var player = (Player)user;
-                    player.HighScore = 0;
+                    if (user is Player)
+                    {
+                        var player = (Player)user;
+                        player.HighScore = 0;
+                    }
                 }
+
+                JsonHelper.SaveList<BasicUser>(game._activeUsersPath, game.ActiveUsers);
+                Console.WriteLine("High Score Board cleared, All high scores on individual users cleared!\n" + ManagerSettings.returnString);
             }
+
+            else
+            {
+                Console.WriteLine("Clearing High Score board has been aborted, " + ManagerSettings.returnString);
+            }
+
+            Console.ReadLine();
+            ManagerSettings.OpenSettings(ManagerSettings.Title);
         }
 
     }

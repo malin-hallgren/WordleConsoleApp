@@ -20,12 +20,12 @@ namespace WordleConsoleApp.User
             UserName = userName;
             CurrentScore = currentScore;
         }
-        
+
         /// <summary>
         /// Updates UserName of the player
         /// </summary>
         /// <param name="player">The player objects whose name will be updated</param>
-        public void UpdateShellPlayerName(Player player)
+        public void UpdateShellName(Player player)
         {
             Console.WriteLine("Please input a username:");
             player.UserName = InputManager.CheckStringInput();
@@ -36,17 +36,17 @@ namespace WordleConsoleApp.User
         /// <summary>
         /// Checks if the CurrentScore of the player that runs the method is higher than the HighScore and sets it and informs player if approppriate
         /// </summary>
-        public void CheckNewHighScore(Game game)
+        public void CheckScore(Game game)
         {
             if (CurrentScore > HighScore)
             {
                 HighScore = CurrentScore;
-                FormatManager.HighlightOutput($"New High Score: {HighScore}!", ConsoleColor.Yellow);
+                FormatManager.Highlight($"New High Score: {HighScore}!", ConsoleColor.Yellow);
                 HighScoreBoard.UpdateScoreBoard(this);
             }
 
             CurrentScore = 0;
-            JsonHelper.SaveListToPath(game._activeUsersPath, game.ActiveUsers);
+            JsonHelper.SaveList(game._activeUsersPath, game.ActiveUsers);
         }
     }
 }

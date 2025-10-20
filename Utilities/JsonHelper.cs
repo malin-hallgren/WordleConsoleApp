@@ -55,7 +55,7 @@ namespace WordleConsoleApp.Utilities
         /// <typeparam name="T">The type of data in the list</typeparam>
         /// <param name="path">file path to load from, if file doesn't exist, it will be created</param>
         /// <returns> <see cref= List{T}">"/>The loaded list, which may be a newly created empty list, to be assigned to list used by program</returns>
-        public static List<T> LoadListFromPath<T>(string path)
+        public static List<T> LoadList<T>(string path)
         {
             List<T> listToLoadTo = new List<T>();
             try
@@ -75,13 +75,13 @@ namespace WordleConsoleApp.Utilities
                 else
                 {
                     Console.WriteLine($"File {path} not found. Creating {path}...");
-                    SaveListToPath(path, listToLoadTo);
+                    SaveList(path, listToLoadTo);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"File {path} cannot be read: {ex.Message}\nOverwriting {path}...");
-                SaveListToPath(path, listToLoadTo);
+                SaveList(path, listToLoadTo);
             }
 
             return listToLoadTo;
@@ -98,7 +98,7 @@ namespace WordleConsoleApp.Utilities
         /// <param name="path">The file path from which to load the dictionary. If the file does not exist, it will be created.</param>
         /// <returns>A <see cref="Dictionary{TKey, TValue}"/> containing the deserialized data from the file, or an empty
         /// dictionary if the file does not exist or cannot be read.</returns>
-        public static Dictionary<TKey, TValue> LoadDictFromPath<TKey, TValue>(string path)
+        public static Dictionary<TKey, TValue> LoadDict<TKey, TValue>(string path)
         {
             Dictionary<TKey, TValue> dictToLoadTo = new Dictionary<TKey, TValue>();
             try
@@ -111,13 +111,13 @@ namespace WordleConsoleApp.Utilities
                 else
                 {
                     Console.WriteLine($"File {path} not found. Creating {path}...");
-                    SaveDictToPath(path, dictToLoadTo);
+                    SaveDict(path, dictToLoadTo);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"File {path} cannot be read: {ex.Message}\nOverwriting {path}...");
-                SaveDictToPath(path, dictToLoadTo);
+                SaveDict(path, dictToLoadTo);
             }
 
             return dictToLoadTo;
@@ -129,7 +129,7 @@ namespace WordleConsoleApp.Utilities
         /// <typeparam name="T">The type of data in the List</typeparam>
         /// <param name="path">The file path to which data will be saved</param>
         /// <param name="listToSave">The List which will be saved</param>
-        public static void SaveListToPath<T>(string path, List<T> listToSave)
+        public static void SaveList<T>(string path, List<T> listToSave)
         {
             try
             {
@@ -159,11 +159,11 @@ namespace WordleConsoleApp.Utilities
         /// <typeparam name="TValue">The type of the value of the Dictionary</typeparam>
         /// <param name="path">The path which to save the Dictionary to</param>
         /// <param name="dictToSave">The Dictionary to save</param>
-        public static void SaveDictToPath<TKey, TValue>(string path, Dictionary<TKey, TValue> dictToSave)
+        public static void SaveDict<TKey, TValue>(string path, Dictionary<TKey, TValue> dictToSave)
         {
             try
             {
-                string json = System.Text.Json.JsonSerializer.Serialize(dictToSave);
+                string json = JsonSerializer.Serialize(dictToSave);
                 File.WriteAllText(path, json);
             }
             catch (Exception ex)

@@ -39,13 +39,13 @@ namespace WordleConsoleApp.Words
         public Word()
         {
             PossibleWords.AddRange(DefaultWords);
-            PossibleWords.AddRange(JsonHelper.LoadListFromPath<string>(_filePath).Where(word => !PossibleWords.Contains(word)));
+            PossibleWords.AddRange(JsonHelper.LoadList<string>(_filePath).Where(word => !PossibleWords.Contains(word)));
         }
 
         /// <summary>
         /// picks a random word from the list of possible words
         /// </summary>
-        public void PickWord()
+        public void Pick()
         {
             var random = new Random();
             int randomIndex = random.Next(PossibleWords.Count);
@@ -57,7 +57,7 @@ namespace WordleConsoleApp.Words
         /// Scrambles the selected word for the player to guess
         /// </summary>
         /// <param name="word">the word to be scramnbled</param>
-        public void ScrambleWord(string word)
+        public void Scramble(string word)
         {
             Random random = new Random();
 
@@ -91,11 +91,21 @@ namespace WordleConsoleApp.Words
         /// Displays the scrambled word
         /// </summary>
         /// <param name="player">the current player object</param>
-        public void DisplayWord(Player player)
+        public void Display(Player player)
         {
             Console.WriteLine($"Guess the word {player.UserName}!\n\n\t{ScrambledWord}\n");
         }
 
+        public void PrintPossibleList(Word word)
+        {
+            foreach (var item in word.PossibleWords)
+            {
+                Console.WriteLine(item);
+            }
+
+            Console.WriteLine("Press ENTER to return to Manager Menu...");
+            Console.ReadLine();
+        }
         
     }
 }
