@@ -28,6 +28,11 @@ namespace WordleConsoleApp.HighScore
                 HighScoreColor(rankString, rank);
                 rank++;
             }
+
+            Console.CursorVisible = false;
+            Console.WriteLine("\nPress ENTER to return to menu...");
+            Console.ReadLine();
+            Console.CursorVisible = true;
         }
 
         public static void HighScoreColor(string entry, int rank)

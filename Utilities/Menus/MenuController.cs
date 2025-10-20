@@ -8,11 +8,21 @@ using WordleConsoleApp.Words;
 
 namespace WordleConsoleApp.Utilities.Menus
 {
-    internal abstract class MenuUI
+    internal class MenuController
     {
-        public List<string> PlayerStartMenu = new List<string> { "Start Game", "Switch User", "High Scores", "Quit" };
-        public static List<string> ManagerStartMenu = new List<string> { "Settings", "Switch User", "High Scores", "Quit" };
+        
+        //public static List<string> PlayerStartMenu = new List<string> {"Welcome to WordGuess, ", "Start Game", "Switch User", "High Scores", "Quit" };
+        //public static List<string> ManagerStartMenu = new List<string> {"", "Settings", "Switch User", "High Scores", "Quit" };
         public static List<string> ConfirmationMenu = new List<string> { "Are you sure you want to ", "Yes", "No" };
+
+        protected static Game CurrentGame;
+        protected static Word CurrentWord;
+
+        public MenuController( Game game, Word word)
+        {
+            CurrentGame = game;
+            CurrentWord = word;
+        }
 
 
         /// <summary>

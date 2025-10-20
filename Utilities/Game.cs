@@ -42,12 +42,13 @@ namespace WordleConsoleApp.Utilities
         /// Resets the game to a game start state
         /// </summary>
         /// <param name="game">the game object which to reset</param>
-        public void SetGame(Game game)
+        public void SetGame(Game game, Word word)
         {
             Attempt = 0;
             MaxAttempts = 5;
             isCorrect = false;
             AmountCorrectLetters = 0;
+            word.PickWord();
         }
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace WordleConsoleApp.Utilities
 
             do
             {
-                CurrentUser = ActiveUsers[MenuUI.MakeMenuChoice(ActiveUsers, "Select User")];
+                CurrentUser = ActiveUsers[MenuController.MakeMenuChoice(ActiveUsers, "Select User")];
 
                 if (CurrentUser is Player) //check what happens when a new user is created and why it becomes a manager
                 {
@@ -76,7 +77,7 @@ namespace WordleConsoleApp.Utilities
                         
                     }
 
-                    StartMenu.Title = $"Welcome to WordGuess, {CurrentUser.UserName}!";
+                    PlayerMenu.Title = $"Welcome to WordGuess, {CurrentUser.UserName}!";
 
                     validChoice = true;
                 }

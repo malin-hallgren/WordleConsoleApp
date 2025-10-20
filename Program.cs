@@ -12,7 +12,7 @@ namespace WordleConsoleApp
         {
             var game = new Game();
             var word = new Word();
-            var startMenu = new StartMenu(); //make this a start menu, alternatively, run start menu from Game
+            var menu = new MenuController(game, word);
             var highScoreBoard = new HighScoreBoard(); //not needed?
 
             game.SetUser();
@@ -25,10 +25,23 @@ namespace WordleConsoleApp
             {
                 if (game.CurrentUser is Player)
                 {
-                    if(!startMenu.StartMenuSelector(word, game))
+                    //if(!PlayerMenu.StartMenuSelector(word, game))
+                    //{
+                    //    continue;
+                    //}
+
+                    bool hasStarted = false;
+                    do
                     {
-                        continue;
-                    }
+                        int selectedAction = MenuController.MakeMenuChoice(PlayerMenu.PlayerMenuOptions.Keys.ToList(), PlayerMenu.Title);
+                        PlayerMenu.PlayerMenuOptions[PlayerMenu.PlayerMenuOptions.Keys.ToList()[selectedAction]]();
+
+                        if (selectedAction == 0)
+                        {
+                            hasStarted = true;
+                        }
+
+                    } while (!hasStarted);
 
                     word.ScrambleWord(word.SelectedWord);
                     word.DisplayWord(game.CurrentPlayer);
@@ -55,10 +68,10 @@ namespace WordleConsoleApp
                 }
                 else
                 {
-                    if(!ManagerMenu.ManagerMenuSelector(word, game))
-                    {
-                        continue;
-                    }
+                    //if(!ManagerMenu.ManagerMenuSelector(word, game))
+                    //{
+                    //    continue;
+                    //}
                 }
             }
         }
