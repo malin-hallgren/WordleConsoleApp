@@ -13,38 +13,40 @@ namespace WordleConsoleApp
             var game = new Game();
             var word = new Word();
             var menu = new MenuController(game, word);
-            var highScoreBoard = new HighScoreBoard(); //not needed?
 
             game.SetUser();
 
-            //create new player object, ask if user want to play as this player or 
-            //create new. Save old player. List<BasicUser>? ActiveUsers, go by isCurrent bool
-
-            
             while (game.isOngoing)
             {
                 if (game.CurrentUser is Player)
                 {
-                    //if(!PlayerMenu.StartMenuSelector(word, game))
-                    //{
-                    //    continue;
-                    //}
-
                     bool hasStarted = false;
                     do
                     {
-                        int selectedAction = MenuController.MakeMenuChoice(PlayerMenu.PlayerMenuOptions.Keys.ToList(), PlayerMenu.Title);
-                        PlayerMenu.PlayerMenuOptions[PlayerMenu.PlayerMenuOptions.Keys.ToList()[selectedAction]]();
+                        int selectedAction = MenuController.Choice(PlayerMenu.Options.Keys.ToList(), PlayerMenu.Title);
+                        PlayerMenu.Options[PlayerMenu.Options.Keys.ToList()[selectedAction]]();
+
+                        
 
                         if (selectedAction == 0)
                         {
                             hasStarted = true;
                         }
 
+                        if (game.CurrentUser is Manager)
+                        {
+                            break;
+                        }
+
                     } while (!hasStarted);
 
-                    word.ScrambleWord(word.SelectedWord);
-                    word.DisplayWord(game.CurrentPlayer);
+                    if (game.CurrentUser is Manager)
+                    {
+                        continue;
+                    }
+
+                    word.Scramble(word.SelectedWord);
+                    word.Display(game.CurrentPlayer);
 
                     while (game.Attempt < game.MaxAttempts && !game.isCorrect)
                     {
@@ -55,7 +57,7 @@ namespace WordleConsoleApp
                     if (game.isCorrect)
                     {
                         Console.WriteLine("\nGood job! You guessed the word!\n");
-                        game.CurrentPlayer.CheckNewHighScore(game);
+                        game.CurrentPlayer.CheckScore(game);
                     }
                     else
                     {
@@ -68,10 +70,13 @@ namespace WordleConsoleApp
                 }
                 else
                 {
-                    //if(!ManagerMenu.ManagerMenuSelector(word, game))
-                    //{
-                    //    continue;
-                    //}
+                    int selectedAction = MenuController.Choice(ManagerMenu.Options.Keys.ToList(), ManagerMenu.Title);
+                    ManagerMenu.Options[ManagerMenu.Options.Keys.ToList()[selectedAction]]();
+
+                    if (game.CurrentUser is Player)
+                    {
+                       continue;
+                    }
                 }
             }
         }

@@ -34,23 +34,16 @@ namespace WordleConsoleApp.User
                 inputtedPassword = InputManager.CheckStringInput();
                 loginAttempt++;
 
-                if(inputtedPassword != Password)
+                if (inputtedPassword != Password)
                 {
                     Console.WriteLine($"Wrong password, you have {3 - loginAttempt} attempts left");
                 }
-                
+
             } while (loginAttempt < 3 && inputtedPassword != Password);
 
             return inputtedPassword == Password;
 
 
         }
-
-        public static void RemoveUser()
-        {
-
-        }
-
-        
     }
 }

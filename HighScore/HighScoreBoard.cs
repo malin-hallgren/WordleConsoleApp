@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WordleConsoleApp.User;
 using WordleConsoleApp.Utilities;
+using WordleConsoleApp.Utilities.Menus;
 
 namespace WordleConsoleApp.HighScore
 {
@@ -16,7 +17,7 @@ namespace WordleConsoleApp.HighScore
 
         static HighScoreBoard()
         {
-            HighScores = JsonHelper.LoadDictFromPath<string, int>(filePath);
+            HighScores = JsonHelper.LoadDict<string, int>(filePath);
         }
         public static void PrintScoreBoard()
         {
@@ -40,13 +41,13 @@ namespace WordleConsoleApp.HighScore
             switch (rank)
             {
                 case 1:
-                    FormatManager.HighlightOutput(entry, ConsoleColor.Yellow);
+                    FormatManager.Highlight(entry, ConsoleColor.Yellow);
                     break;
                 case 2:
-                    FormatManager.HighlightOutput(entry, ConsoleColor.DarkGray);
+                    FormatManager.Highlight(entry, ConsoleColor.DarkGray);
                     break;
                 case 3:
-                    FormatManager.HighlightOutput(entry, ConsoleColor.DarkYellow);
+                    FormatManager.Highlight(entry, ConsoleColor.DarkYellow);
                     break;
                 default:
                     Console.Write(entry);
@@ -61,11 +62,11 @@ namespace WordleConsoleApp.HighScore
                 HighScores.Remove(player.UserName);
                 HighScores.Add(player.UserName, player.HighScore);
             }
-            SortByScore();
-            JsonHelper.SaveDictToPath(filePath, HighScores);
+            ScoreSort();
+            JsonHelper.SaveDict(filePath, HighScores);
         }
 
-        private static void SortByScore()
+        private static void ScoreSort()
         {
             HighScores = HighScores.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
         }
@@ -77,7 +78,7 @@ namespace WordleConsoleApp.HighScore
         public static void ClearScoreBoard(Game game)
         {
             HighScores.Clear();
-            JsonHelper.SaveDictToPath(filePath, HighScores);
+            JsonHelper.SaveDict(filePath, HighScores);
 
             foreach (var user in game.ActiveUsers)
             {
@@ -87,6 +88,11 @@ namespace WordleConsoleApp.HighScore
                     player.HighScore = 0;
                 }
             }
+
+            JsonHelper.SaveList<BasicUser>(game._activeUsersPath, game.ActiveUsers);
+            Console.WriteLine("High Score Board cleared, All high scores on individual users cleared!\nPress ENTER to return to Manager Menu...");
+            Console.ReadLine();
+            ManagerSettings.OpenSettings(ManagerSettings.Title);
         }
 
     }

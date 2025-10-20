@@ -35,8 +35,20 @@ namespace WordleConsoleApp.User
         {
             foreach (var user in users)
             {
-                Console.WriteLine(user);
+                if (!user.IsShellUser)
+                {
+                    Console.WriteLine($"Name: {user.UserName}");
+                    if (user is Player)
+                    {
+                        var player = (Player)user;
+                        Console.WriteLine($"High Score: {player.HighScore}");
+                    }
+                    Console.WriteLine();
+                }
             }
+
+            Console.WriteLine("Press ENTER to return to Manager Menu...");
+            Console.ReadLine();
         }
 
         /// <summary>

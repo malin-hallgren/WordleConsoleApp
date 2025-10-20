@@ -32,14 +32,14 @@ namespace WordleConsoleApp.Utilities.Menus
         /// <param name="options">List of the aforementioned type to be presented as menu options</param>
         /// <param name="title">Title of the menu to be presented above the choices</param>
         /// <returns>returns an int to be used to pick out which index of the list was chosen</returns>
-        public static int MakeMenuChoice<T>(List<T> options, string title = "WordGuess")
+        public static int Choice<T>(List<T> options, string title = "WordGuess")
         {
             Console.CursorVisible = false;
             int selected = 0;
             int prevSelected = selected;
             Console.Clear();
 
-            DrawMenu(options, selected, prevSelected, title);
+            Draw(options, selected, prevSelected, title);
 
             while (true)
             {
@@ -53,14 +53,14 @@ namespace WordleConsoleApp.Utilities.Menus
                         prevSelected = selected;
                         selected = (selected - 1 + options.Count) % options.Count;
                         ClearLine(selected, prevSelected);
-                        DrawMenu(options, selected, prevSelected, title);
+                        Draw(options, selected, prevSelected, title);
                         break;
                     case ConsoleKey.DownArrow:
                     case ConsoleKey.S:
                         prevSelected = selected;
                         selected = (selected + 1) % options.Count;
                         ClearLine(selected, prevSelected);
-                        DrawMenu(options, selected, prevSelected, title);
+                        Draw(options, selected, prevSelected, title);
                         break;
                     case ConsoleKey.Enter:
                         Console.CursorVisible = true;
@@ -78,7 +78,7 @@ namespace WordleConsoleApp.Utilities.Menus
         /// <param name="selected">the currently selected element</param>
         /// <param name="prevSelected">the previously selected element</param>
         /// <param name="title">the title of the menu</param>
-        private static void DrawMenu<T>(List<T> options, int selected, int prevSelected, string title)
+        private static void Draw<T>(List<T> options, int selected, int prevSelected, string title)
         {
             Console.WriteLine($"{title}\n");
 

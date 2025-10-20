@@ -8,7 +8,7 @@ using WordleConsoleApp.Words;
 
 namespace WordleConsoleApp.Utilities.Menus
 {
-    internal class UserSelectMenu
+    internal class UserSelect
     {
         
         /// <summary>

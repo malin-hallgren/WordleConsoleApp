@@ -15,7 +15,7 @@ namespace WordleConsoleApp.Utilities
         /// <typeparam name="T"></typeparam>
         /// <param name="input">The text to color</param>
         /// <param name="color">The ConsoleColor to use for highlight</param>
-        public static void HighlightOutput<T>(T input, ConsoleColor color)
+        public static void Highlight<T>(T input, ConsoleColor color)
         {
             
             ConsoleColor originalForeground = Console.ForegroundColor;
