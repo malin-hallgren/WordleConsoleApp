@@ -12,7 +12,7 @@ namespace WordleConsoleApp.Utilities.Menus
     {
         public List<string> PlayerStartMenu = new List<string> { "Start Game", "Switch User", "High Scores", "Quit" };
         public static List<string> ManagerStartMenu = new List<string> { "Settings", "Switch User", "High Scores", "Quit" };
-        
+        public static List<string> ConfirmationMenu = new List<string> { "Are you sure you want to ", "Yes", "No" };
 
 
         /// <summary>

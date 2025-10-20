@@ -11,30 +11,34 @@ namespace WordleConsoleApp.Words
 {
     internal class Word
     {
-        private string _filePath = "WordLibrary.json";
-        public List<string> PossibleWords { get; set; } = new List<string>
+        public string _filePath = "WordLibrary.json";
+
+        public List<string> DefaultWords { get; set; } = new List<string>
         {
-            "duck", 
-            "desk", 
-            "chair", 
-            "phone", 
-            "bottle", 
-            "screen", 
-            "editor", 
-            "laptop", 
-            "monitor", 
-            "program", 
-            "software", 
+            "duck",
+            "desk",
+            "chair",
+            "phone",
+            "bottle",
+            "screen",
+            "editor",
+            "laptop",
+            "monitor",
+            "program",
+            "software",
             "computer",
             "terminal",
             "developer"
         };
+        public List<string> PossibleWords { get; set; } = new List<string>();
+
         public string SelectedWord { get; private set; }
         public string ScrambledWord { get; private set; }
         
 
         public Word()
         {
+            PossibleWords.AddRange(DefaultWords);
             PossibleWords.AddRange(JsonHelper.LoadListFromPath<string>(_filePath).Where(word => !PossibleWords.Contains(word)));
         }
 
