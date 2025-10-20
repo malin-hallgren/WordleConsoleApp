@@ -36,7 +36,7 @@ namespace WordleConsoleApp.User
         /// <summary>
         /// Checks if the CurrentScore of the player that runs the method is higher than the HighScore and sets it and informs player if approppriate
         /// </summary>
-        public void CheckNewHighScore()
+        public void CheckNewHighScore(Game game)
         {
             if (CurrentScore > HighScore)
             {
@@ -45,14 +45,8 @@ namespace WordleConsoleApp.User
                 HighScoreBoard.UpdateScoreBoard(this);
             }
 
-            ResetScore();
-        }
-        /// <summary>
-        /// Resets player's CurrentScore to 0
-        /// </summary>
-        public void ResetScore()
-        {
             CurrentScore = 0;
+            JsonHelper.SaveListToPath(game._activeUsersPath, game.ActiveUsers);
         }
     }
 }
