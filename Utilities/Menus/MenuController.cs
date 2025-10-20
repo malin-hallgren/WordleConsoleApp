@@ -10,10 +10,7 @@ namespace WordleConsoleApp.Utilities.Menus
 {
     internal class MenuController
     {
-        
-        //public static List<string> PlayerStartMenu = new List<string> {"Welcome to WordGuess, ", "Start Game", "Switch User", "High Scores", "Quit" };
-        //public static List<string> ManagerStartMenu = new List<string> {"", "Settings", "Switch User", "High Scores", "Quit" };
-        public static List<string> ConfirmationMenu = new List<string> { "Are you sure you want to ", "Yes", "No" };
+        public static List<string> ConfirmationMenu = new List<string> { "Are you sure you?", "Yes", "No" };
 
         protected static Game CurrentGame;
         protected static Word CurrentWord;

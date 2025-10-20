@@ -21,6 +21,8 @@ namespace WordleConsoleApp.Utilities.Menus
             {"Back", () => { } }
         };
 
+        public static string returnString = "Press ENTER to return to Manager Settings Menu";
+
         public static string Title { get; set; } = "What do you wish to change?";
 
         public ManagerSettings(Game game, Word word) : base(game, word)
@@ -42,6 +44,9 @@ namespace WordleConsoleApp.Utilities.Menus
             CurrentWord.PossibleWords.Add(word);
             JsonHelper.SaveList(CurrentWord._filePath, CurrentWord.PossibleWords);
 
+            Console.WriteLine($"\"{word}\" was added to the list of possible words. " + returnString);
+            Console.ReadLine();
+
             OpenSettings(Title);
         }
 
@@ -57,27 +62,29 @@ namespace WordleConsoleApp.Utilities.Menus
 
             if (choice == deletableWords.Count - 1)
             {
-                Console.WriteLine("No Words deleted, returning to Manager Settings Menu");
+                Console.WriteLine("No Words deleted, " + returnString);
                 Console.ReadLine();
             }
             else if (choice == deletableWords.Count - 2)
             {
-                choice = Choice(ConfirmationMenu[1..], ConfirmationMenu[0] + "delete all custom words?");
+                choice = Choice(ConfirmationMenu[1..], ConfirmationMenu[0]);
                 if (choice + 1 == 1)
                 {
                     CurrentWord.PossibleWords = CurrentWord.PossibleWords.Intersect(CurrentWord.DefaultWords).ToList();
-                    Console.WriteLine("All custom words removed, returning to Manager Settings Menu");
+                    Console.WriteLine("All custom words removed, " + returnString);
                     Console.ReadLine();
                 }
                 else
                 {
-                    Console.WriteLine("Wiping of words aborted, returning to Manager Settings Menu");
+                    Console.WriteLine("Wiping of words aborted, " + returnString);
                     Console.ReadLine();
                 }
             }
             else
             {
+                Console.WriteLine($"\"{CurrentWord.PossibleWords[choice + CurrentWord.DefaultWords.Count]}\" was removed from the list of possible words. " + returnString);
                 CurrentWord.PossibleWords.RemoveAt(choice + CurrentWord.DefaultWords.Count);
+                Console.ReadLine();
             }
 
             JsonHelper.SaveList(CurrentWord._filePath, CurrentWord.PossibleWords);
@@ -92,25 +99,36 @@ namespace WordleConsoleApp.Utilities.Menus
             CurrentGame.ActiveUsers.Add(new Player("Wipe All"));
             CurrentGame.ActiveUsers.Add(new Player("Back"));
             int toRemove = Choice(CurrentGame.ActiveUsers, "Which user to remove?");
+            int choice = 0;
 
             if (CurrentGame.ActiveUsers[toRemove].IsAdmin)
             {
-                Console.WriteLine("Admin user cannot be removed");
+                Console.WriteLine("Admin user cannot be removed, " + returnString);
             }
             else if (CurrentGame.ActiveUsers[toRemove].UserName == "Wipe All")
             {
-                Manager savedManager = CurrentGame.CurrentManager;
+                choice = Choice(ConfirmationMenu[1..], ConfirmationMenu[0]);
 
-                CurrentGame.ActiveUsers.Clear();
-                HighScoreBoard.ClearScoreBoard(CurrentGame);
-                CurrentGame.ActiveUsers.Add(savedManager);
+                if (choice + 1 == 1)
+                {
+                    Manager savedManager = CurrentGame.CurrentManager;
 
-                Console.WriteLine("All Users and High Scores wiped!");
-                Console.ReadLine();
+                    CurrentGame.ActiveUsers.Clear();
+                    HighScoreBoard.ClearScoreBoard(CurrentGame);
+                    CurrentGame.ActiveUsers.Add(savedManager);
+
+                    Console.WriteLine("All Users and High Scores wiped! " + returnString);
+                    Console.ReadLine();
+                }
+                else
+                {
+                    Console.WriteLine("Wiping of Users aborted, " + returnString);
+                }
+                
             }
             else if (CurrentGame.ActiveUsers[toRemove].UserName != "Back")
             {
-                Console.WriteLine($"Player {CurrentGame.ActiveUsers[toRemove]} has been removed and their scores on the High Score Board has been wiped");
+                Console.WriteLine($"Player {CurrentGame.ActiveUsers[toRemove]} has been removed and their scores on the High Score Board has been wiped. " + returnString);
                 HighScoreBoard.ClearSingleScore((Player)CurrentGame.ActiveUsers[toRemove]);
                 CurrentGame.ActiveUsers.RemoveAt(toRemove);
                 Console.ReadLine();

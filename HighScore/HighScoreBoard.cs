@@ -77,20 +77,30 @@ namespace WordleConsoleApp.HighScore
         }
         public static void ClearScoreBoard(Game game)
         {
-            HighScores.Clear();
-            JsonHelper.SaveDict(filePath, HighScores);
-
-            foreach (var user in game.ActiveUsers)
+            int choice = MenuController.Choice(MenuController.ConfirmationMenu[1..], MenuController.ConfirmationMenu[0]);
+            if ( choice +1 == 1)
             {
-                if(user is Player)
+                HighScores.Clear();
+                JsonHelper.SaveDict(filePath, HighScores);
+
+                foreach (var user in game.ActiveUsers)
                 {
-                    var player = (Player)user;
-                    player.HighScore = 0;
+                    if (user is Player)
+                    {
+                        var player = (Player)user;
+                        player.HighScore = 0;
+                    }
                 }
+
+                JsonHelper.SaveList<BasicUser>(game._activeUsersPath, game.ActiveUsers);
+                Console.WriteLine("High Score Board cleared, All high scores on individual users cleared!\n" + ManagerSettings.returnString);
             }
 
-            JsonHelper.SaveList<BasicUser>(game._activeUsersPath, game.ActiveUsers);
-            Console.WriteLine("High Score Board cleared, All high scores on individual users cleared!\nPress ENTER to return to Manager Menu...");
+            else
+            {
+                Console.WriteLine("Clearing High Score board has been aborted, " + ManagerSettings.returnString);
+            }
+
             Console.ReadLine();
             ManagerSettings.OpenSettings(ManagerSettings.Title);
         }
