@@ -73,17 +73,19 @@ namespace WordleConsoleApp.Utilities
 
                     if (CurrentPlayer.IsShellUser)
                     {
-                        CurrentPlayer.UpdateShellName(CurrentPlayer);
+                        CurrentPlayer = CurrentPlayer.UpdateShellName(CurrentPlayer, this);
                         
                     }
 
-                    PlayerMenu.Title = $"Welcome to WordGuess, {CurrentUser.UserName}!";
+                    CurrentUser = CurrentPlayer;
+                    PlayerMenu.Title = $"Welcome to WordGuess, {CurrentPlayer.UserName}!";
 
                     validChoice = true;
                 }
                 else
                 {
                     CurrentManager = (Manager)CurrentUser;
+                    CurrentUser = CurrentManager;
 
                     if (CurrentManager.CheckPassword(CurrentManager))
                     {

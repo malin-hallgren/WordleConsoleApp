@@ -11,6 +11,12 @@ namespace WordleConsoleApp.Utilities.Menus
     internal class MenuController
     {
         public static List<string> ConfirmationMenu = new List<string> { "Are you sure you?", "Yes", "No" };
+        public static List<string> ExistingUser = new List<string>()
+            {//Fix actions here
+                {"Select Other Name"},
+                {"Select Existing User"}, //Select the user with inputted name
+                {"Back to User Select Menu"}
+            };
 
         protected static Game CurrentGame;
         protected static Word CurrentWord;
