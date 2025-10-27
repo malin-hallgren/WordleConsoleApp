@@ -23,7 +23,7 @@ namespace WordleConsoleApp.Utilities.Menus
 
         public static string returnString = "Press ENTER to return to Manager Settings Menu";
 
-        public static string Title { get; set; } = "What do you wish to change?";
+        public static new string Title { get; set; } = "What do you wish to change?";
 
         public ManagerSettings(Game game, Word word) : base(game, word)
         {
@@ -31,12 +31,20 @@ namespace WordleConsoleApp.Utilities.Menus
             CurrentWord = word;
         }
 
+
+        /// <summary>
+        /// Opens the Manager settings menu
+        /// </summary>
+        /// <param name="settingsTitle">Title of the menu to display</param>
         public static void OpenSettings(string settingsTitle)
         {
             int selectedKey = Choice(Options.Keys.ToList(), settingsTitle);
             Options[Options.Keys.ToList()[selectedKey]]();
         }
 
+        /// <summary>
+        /// Opens menu to adds a word to the list of possible words and saves it to the json
+        /// </summary>
         public static void AddWord()
         {
             Console.WriteLine("Input the word you wish to add:");
@@ -50,6 +58,9 @@ namespace WordleConsoleApp.Utilities.Menus
             OpenSettings(Title);
         }
 
+        /// <summary>
+        /// opens menu allowing for removal of a word from the existing word list and saves the new word list
+        /// </summary>
         public static void RemoveWord()
         {
             string deleteHeader = "Which word do you wish to remove? Default words may not be deleted and are not displayed here";
@@ -92,6 +103,9 @@ namespace WordleConsoleApp.Utilities.Menus
             OpenSettings(Title);
         }
 
+        /// <summary>
+        /// Opens menu to select and remove a user, or wipe all users
+        /// </summary>
         public static void RemoveUser()
         {
             CurrentGame.ActiveUsers.RemoveAll(x => x.UserName == "New Player");

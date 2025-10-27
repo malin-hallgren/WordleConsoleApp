@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WordleConsoleApp.Utilities;
 using WordleConsoleApp.HighScore;
+using WordleConsoleApp.Utilities.Menus;
 
 namespace WordleConsoleApp.User
 {
@@ -25,12 +26,45 @@ namespace WordleConsoleApp.User
         /// Updates UserName of the player
         /// </summary>
         /// <param name="player">The player objects whose name will be updated</param>
-        public void UpdateShellName(Player player)
+        public Player UpdateShellName(Player player, Game game)
         {
-            Console.WriteLine("Please input a username:");
-            player.UserName = InputManager.CheckStringInput();
+            bool nameSet = false;
+
+            do
+            {
+                Console.WriteLine("Please input a unique username:");
+                string? inputtedName;
+                int selected = 0;
+
+                inputtedName = InputManager.CheckStringInput();
+                if (game.ActiveUsers.Exists(x => x.UserName == inputtedName))
+                {
+                    selected = MenuController.Choice(MenuController.ExistingUser, $"A Player with name \"{inputtedName}\" already exists");
+                    if (selected == 0)
+                    {
+                        continue;
+                    }
+                    else if (selected == 1)
+                    {
+                        player = (Player)game.ActiveUsers.Find(x => x.UserName.Contains(inputtedName));
+                    }
+                    else
+                    {
+                        player = (Player)game.SetUser();
+                    }
+                }
+                else
+                {
+                    player.UserName = inputtedName;
+                }   
+                nameSet = true;
+
+            } while (!nameSet);
+            
+
             player.IsShellUser = false;
             Console.Clear();
+            return player;
         }
 
         /// <summary>

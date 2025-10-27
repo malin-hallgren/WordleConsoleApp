@@ -63,7 +63,7 @@ namespace WordleConsoleApp.Utilities
                 if (File.Exists(path))
                 {
                     string json = File.ReadAllText(path);
-                    if (listToLoadTo is List<BasicUser>)
+                    if (typeof(T) == typeof(BasicUser))
                     {
                         listToLoadTo = JsonSerializer.Deserialize<List<T>>(json, Options) ?? new List<T>();
                     }
