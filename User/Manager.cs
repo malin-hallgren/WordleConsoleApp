@@ -4,20 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WordleConsoleApp.Utilities;
+using Microsoft.AspNetCore.Identity;
+using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 
 namespace WordleConsoleApp.User
 {
     internal class Manager : BasicUser
     {
-        public string Password { get; private set; } = "admin_000";
+        public string HashPassword { get; set; } = string.Empty;
+
+        [JsonIgnore]
+        public PasswordHasher<Manager> Hasher { get; private set; } = new();
+
+        public Manager(string password)
+        {
+            UserName = "Admin";
+            IsAdmin = true;
+            HashPassword = Hasher.HashPassword(this, password);
+        }
 
         public Manager()
         {
             UserName = "Admin";
             IsAdmin = true;
         }
-
-
         /// <summary>
         /// Checks whether password entered by User is matching stored password
         /// </summary>
@@ -28,22 +39,25 @@ namespace WordleConsoleApp.User
             Console.WriteLine("Please input your password:");
             string? inputtedPassword;
             int loginAttempt = 0;
+            var loginStatus = new PasswordVerificationResult();
 
             do
             {
                 inputtedPassword = InputManager.CheckStringInput();
                 loginAttempt++;
 
-                if (inputtedPassword != Password)
+                loginStatus = Hasher.VerifyHashedPassword(this, HashPassword, inputtedPassword);
+
+                if (loginStatus == PasswordVerificationResult.Failed)//(inputtedPassword != DefaultPassword)
                 {
                     Console.WriteLine($"Wrong password, you have {3 - loginAttempt} attempts left");
                 }
 
-            } while (loginAttempt < 3 && inputtedPassword != Password);
+            } while (loginAttempt < 3 && loginStatus == PasswordVerificationResult.Failed);
 
-            return inputtedPassword == Password;
+            
 
-
+            return loginStatus == PasswordVerificationResult.Success;
         }
     }
 }

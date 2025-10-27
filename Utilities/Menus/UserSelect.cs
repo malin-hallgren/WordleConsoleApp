@@ -33,7 +33,8 @@ namespace WordleConsoleApp.Utilities.Menus
         {
             if (!users.Any(user => user.IsAdmin == true))
             {
-                var newManager = new Manager();
+                Console.WriteLine("No Manager exists. Creating...\nPlease input a new password:");
+                var newManager = new Manager(InputManager.CheckStringInput());
                 users.Add(newManager);
             }
         }
