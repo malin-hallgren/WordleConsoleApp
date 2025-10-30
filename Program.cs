@@ -47,6 +47,7 @@ namespace WordleConsoleApp
 
                     word.Scramble(word.SelectedWord);
                     word.Display(game.CurrentPlayer);
+                    game.stopWatch.Start();
 
                     while (game.Attempt < game.MaxAttempts && !game.isCorrect)
                     {
@@ -56,11 +57,12 @@ namespace WordleConsoleApp
                     FormatManager.TabToPos(game.Attempt + 1, 0);
                     if (game.isCorrect)
                     {
-                        Console.WriteLine("\nGood job! You guessed the word!\n");
+                        Console.WriteLine("\n\nGood job! You guessed the word!\n");
                         game.CurrentPlayer.CheckScore(game);
                     }
                     else
                     {
+                        game.stopWatch.Stop();
                         Console.WriteLine("Sorry you did not guess the word.");
                         Console.WriteLine($"The word was: {word.SelectedWord}");
                     }

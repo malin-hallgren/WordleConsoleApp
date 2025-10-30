@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +36,8 @@ namespace WordleConsoleApp.Utilities
         public int Tab { get; private set; } = 8;
 
         public int StaticRows { get; private set; } = 4;
+
+        public Stopwatch stopWatch { get; set; } = new Stopwatch();
 
         
 
@@ -112,8 +115,6 @@ namespace WordleConsoleApp.Utilities
             return CurrentUser;
         }
         
-
-
         /// <summary>
         /// Allows player to make a guess
         /// </summary>
@@ -165,7 +166,14 @@ namespace WordleConsoleApp.Utilities
 
             if (guess == target)
             {
-                PrintScore(guessScore, true, CurrentPlayer);
+                stopWatch.Stop();
+                TimeSpan time = stopWatch.Elapsed;
+                int timeScore = 5000 - time.Milliseconds;
+                if (timeScore < 0)
+                {
+                    timeScore = 0;
+                }
+                PrintScore(guessScore, true, CurrentPlayer, timeScore);
                 return true;
             }
             else
@@ -198,8 +206,7 @@ namespace WordleConsoleApp.Utilities
         /// </summary>
         /// <param name="guessScore">the score to print</param>
         /// <param name="isCorrect">whether the guess is completely correct or not</param>
-        /// <param name="player">the current player</param>
-        private void PrintScore(int guessScore, bool isCorrect, Player player) //does this need a player object?
+        private void PrintScore(int guessScore, bool isCorrect, Player player, int timeBonus = 0) 
         {
             char[] output = new char[5];
             Array.Fill(output, ' ');
@@ -230,7 +237,11 @@ namespace WordleConsoleApp.Utilities
             //we don't have to change that much... the +2 is technically Tab / 4
             if (isCorrect)
             {
-                FormatManager.TabToPos(Attempt + 1, (2 * Tab) + (Tab / 2) + 2, StaticRows);
+                player.CurrentScore += timeBonus;
+                Console.Write($"\nTime Bonus:");
+                FormatManager.TabToPos(Attempt + 1, (2 * Tab) + (Tab / 2), StaticRows);
+                FormatManager.Highlight("+ " + timeBonus, ConsoleColor.Blue);
+                FormatManager.TabToPos(Attempt + 2, (2 * Tab) + (Tab / 2) + 2, StaticRows);
                 FormatManager.Highlight(player.CurrentScore, ConsoleColor.DarkYellow);
             }
         }
